@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reino de MIMO - Tu Sistema Mágico de Organización Personal</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/mimo-theme.css}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-mimo">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">🏰 Reino de MIMO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tareas}">Tareas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/espacios}">Espacios</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Bienvenido al Reino de MIMO</h1>
+            <h2 class="h3 mb-4">Tu Sistema Mágico de Organización Personal</h2>
+            <p class="lead">Transforma tu espacio, transforma tu vida</p>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="mimo-card card h-100 p-4 text-center">
+                    <div class="mimo-icon">👀</div>
+                    <h3 class="h4">Mírate</h3>
+                    <p>Conoce tus necesidades y hábitos</p>
+                    <a th:href="@{/tareas(categoria=MIRATE)}" class="btn btn-mimo-primary">Ver tareas</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mimo-card card h-100 p-4 text-center">
+                    <div class="mimo-icon">✨</div>
+                    <h3 class="h4">Imagina</h3>
+                    <p>Visualiza tu espacio ideal</p>
+                    <a th:href="@{/tareas(categoria=IMAGINA)}" class="btn btn-mimo-primary">Ver tareas</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mimo-card card h-100 p-4 text-center">
+                    <div class="mimo-icon">🚀</div>
+                    <h3 class="h4">Muévete</h3>
+                    <p>Actúa para lograr el cambio</p>
+                    <a th:href="@{/tareas(categoria=MUEVETE)}" class="btn btn-mimo-primary">Ver tareas</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mimo-card card h-100 p-4 text-center">
+                    <div class="mimo-icon">📦</div>
+                    <h3 class="h4">Ordena</h3>
+                    <p>Mantén tu espacio organizado</p>
+                    <a th:href="@{/tareas(categoria=ORDENA)}" class="btn btn-mimo-primary">Ver tareas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white mt-5 py-3">
+        <div class="container text-center">
+            <p>Reino de MIMO &copy; 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/comun/config.js}"></script>
+    <script th:src="@{/js/comun/app.js}"></script>
+</body>
+</html>

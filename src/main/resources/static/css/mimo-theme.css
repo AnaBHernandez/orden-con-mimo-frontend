@@ -1,0 +1,95 @@
+:root {
+
+    --mimo-primary: #98D8C8;    /* Verde menta */
+    --mimo-accent: #F5E6A8;     /* Amarillo suave */
+    --mimo-secondary: #89CFF0;  /* Azul bebé */
+    --mimo-warm: #FFFFFF;       /* Blanco */
+    --mimo-text: #2A4747;       /* Verde oscuro para texto */
+    
+
+    --mirate-color: #614385;    /* Púrpura */
+    --imagina-color: #F1C40F;   /* Dorado */
+    --muevete-color: #E67E22;   /* Naranja */
+    --ordena-color: #27AE60;    /* Verde */
+    
+
+    --border-radius: 1rem;      /* Bordes más redondeados como en tu diseño */
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: var(--mimo-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: var(--mimo-text);
+}
+
+
+.hero-section {
+    background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+    color: var(--mimo-text);
+    padding: 5rem 0;
+    text-align: center;
+}
+
+.mimo-card {
+    border: none;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-color: var(--mimo-warm);
+    color: var(--mimo-text);
+    margin-bottom: 1.5rem;
+}
+
+.mimo-card:hover {
+    transform: translateY(-5px);
+    background-color: var(--mimo-accent);
+}
+
+.mimo-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+
+.navbar-mimo {
+    background: linear-gradient(90deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+}
+
+.navbar-mimo .navbar-brand {
+    color: var(--mimo-text);
+    font-weight: bold;
+}
+
+.navbar-mimo .nav-link {
+    color: var(--mimo-text);
+}
+
+.navbar-mimo .nav-link:hover {
+    color: var(--mimo-text);
+    opacity: 0.8;
+}
+
+
+.btn-mimo-primary {
+    background-color: var(--mimo-primary);
+    border-color: var(--mimo-primary);
+    color: var(--mimo-text);
+}
+
+.btn-mimo-secondary {
+    background-color: var(--mimo-secondary);
+    border-color: var(--mimo-secondary);
+    color: var(--mimo-text);
+}
+
+.btn-mimo-accent {
+    background-color: var(--mimo-accent);
+    border-color: var(--mimo-accent);
+    color: var(--mimo-text);
+}
