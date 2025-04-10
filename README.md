@@ -46,6 +46,7 @@ El esquema de colores principal de la aplicación es:
 
 Nota: Asegúrate de que el backend esté ejecutándose en http://localhost:8080 para que la comunicación con la API funcione correctamente.
 
+```
 📂 Estructura del proyecto
 La estructura del proyecto sigue una organización por componentes funcionales:
 
@@ -67,22 +68,28 @@ src/
 │           ├── tarea/
 │           └── espacio/
 
+```
+
+```
 🔄 Comunicación con el backend
 El frontend se comunica con el backend a través de APIs REST:
 
 API de Tareas: Gestión de tareas personales
 API de Espacios: Gestión de espacios organizativos
 La configuración para la comunicación con la API se encuentra en /js/comun/config.js.
+```
 
 📚 Documentación
 Para más información sobre el proyecto, consulta la Wiki del repositorio.
 
-🤝 Contribución
+```🤝 Contribución
 Haz fork del proyecto
 Crea una rama para tu funcionalidad (git checkout -b feature/amazing-feature)
 Haz commit de tus cambios (git commit -m 'Add some amazing feature')
 Push a la rama (git push origin feature/amazing-feature)
 Abre un Pull Request
+```
+
 📜 Licencia
 Este proyecto está licenciado bajo MIT License.
 
