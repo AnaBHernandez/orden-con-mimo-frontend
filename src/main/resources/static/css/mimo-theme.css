@@ -1,95 +1,235 @@
 :root {
-
-    --mimo-primary: #98D8C8;    /* Verde menta */
-    --mimo-accent: #F5E6A8;     /* Amarillo suave */
-    --mimo-secondary: #89CFF0;  /* Azul bebé */
-    --mimo-warm: #FFFFFF;       /* Blanco */
-    --mimo-text: #2A4747;       /* Verde oscuro para texto */
-    
-
-    --mirate-color: #614385;    /* Púrpura */
-    --imagina-color: #F1C40F;   /* Dorado */
-    --muevete-color: #E67E22;   /* Naranja */
-    --ordena-color: #27AE60;    /* Verde */
-    
-
-    --border-radius: 1rem;      /* Bordes más redondeados como en tu diseño */
+  --mirate-color: #614385;
+  --imagina-color: #F1C40F;
+  --muevete-color: #E67E22;
+  --ordena-color: #27AE60;
+  
+  --primary-color: #98D8C8;
+  --accent-color: #F5E6A8;
+  --secondary-color: #89CFF0;
+  
+  --background-color: #f8f9fa;
+  --text-color: #333333;
+  --border-color: #dee2e6;
+  --hover-color: rgba(0, 0, 0, 0.05);
+  
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
 }
-
 
 body {
-    font-family: 'Arial', sans-serif;
-    color: var(--mimo-text);
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-    color: var(--mimo-text);
+.reino-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-.hero-section {
-    background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
-    color: var(--mimo-text);
-    padding: 5rem 0;
-    text-align: center;
+.reino-logo {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.mimo-card {
-    border: none;
-    border-radius: var(--border-radius);
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    background-color: var(--mimo-warm);
-    color: var(--mimo-text);
-    margin-bottom: 1.5rem;
+.reino-nav-link {
+  color: white;
+  margin: 0 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.3s;
 }
 
-.mimo-card:hover {
-    transform: translateY(-5px);
-    background-color: var(--mimo-accent);
+.reino-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  color: white;
 }
 
-.mimo-icon {
-    font-size: 2.5rem;
+.category-card {
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hover-shadow);
+}
+
+.category-card h3 {
+  font-family: 'Cinzel', serif;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.mirate-card {
+  background-color: var(--mirate-color);
+  color: white;
+  border-left: 8px solid #4A3568;
+}
+
+.imagina-card {
+  background-color: var(--imagina-color);
+  color: #333;
+  border-left: 8px solid #D4AC0D;
+}
+
+.muevete-card {
+  background-color: var(--muevete-color);
+  color: white;
+  border-left: 8px solid #BA4A00;
+}
+
+.ordena-card {
+  background-color: var(--ordena-color);
+  color: white;
+  border-left: 8px solid #196F3D;
+}
+
+.tarea-item {
+  background-color: white;
+  border-radius: var(--border-radius-sm);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.tarea-item:hover {
+  transform: translateX(5px);
+}
+
+.tarea-titulo {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.tarea-descripcion {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.tarea-completada {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.btn-reino {
+  border-radius: var(--border-radius-sm);
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-primary-reino {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #333;
+}
+
+.btn-primary-reino:hover {
+  background-color: #7fc3b1;
+  border-color: #7fc3b1;
+}
+
+.btn-accent-reino {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #333;
+}
+
+.btn-accent-reino:hover {
+  background-color: #e8d88d;
+  border-color: #e8d88d;
+}
+
+.form-reino {
+  background-color: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.form-reino .form-control {
+  border-radius: var(--border-radius-sm);
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+}
+
+.form-reino .form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(152, 216, 200, 0.25);
+}
+
+.form-reino label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.espacio-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s;
+}
+
+.espacio-card:hover {
+  transform: translateY(-5px);
+}
+
+.espacio-titulo {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+}
+
+.espacio-descripcion {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.espacio-stats {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@media (max-width: 768px) {
+  .category-card {
     margin-bottom: 1rem;
-    text-align: center;
-}
-
-
-.navbar-mimo {
-    background: linear-gradient(90deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
-}
-
-.navbar-mimo .navbar-brand {
-    color: var(--mimo-text);
-    font-weight: bold;
-}
-
-.navbar-mimo .nav-link {
-    color: var(--mimo-text);
-}
-
-.navbar-mimo .nav-link:hover {
-    color: var(--mimo-text);
-    opacity: 0.8;
-}
-
-
-.btn-mimo-primary {
-    background-color: var(--mimo-primary);
-    border-color: var(--mimo-primary);
-    color: var(--mimo-text);
-}
-
-.btn-mimo-secondary {
-    background-color: var(--mimo-secondary);
-    border-color: var(--mimo-secondary);
-    color: var(--mimo-text);
-}
-
-.btn-mimo-accent {
-    background-color: var(--mimo-accent);
-    border-color: var(--mimo-accent);
-    color: var(--mimo-text);
+  }
+  
+  .reino-logo {
+    font-size: 1.5rem;
+  }
+  
+  .form-reino {
+    padding: 1.5rem;
+  }
 }
