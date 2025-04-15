@@ -10,9 +10,4 @@ public class HomeController {
     public String home() {
         return "index";
     }
-    
-    @GetMapping("/sobre-mimo")
-    public String sobreMimo() {
-        return "sobre-mimo";
-    }
 }

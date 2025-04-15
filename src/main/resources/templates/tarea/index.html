@@ -1,33 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Tareas - Orden con MIMO</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Incluye tus CSS aquí si es necesario -->
+    <title>Lista de Tareas</title>
 </head>
 <body>
-    <div class="container mt-4">
-        <h1 class="mb-4">Mis Tareas</h1>
-        
-        <div class="row mb-3">
-            <div class="col">
-                <button id="nuevaTarea" class="btn btn-primary">Nueva Tarea</button>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col">
-                <div id="listaTareas" class="tareas-container">
-                    <!-- Aquí se cargarán las tareas desde JavaScript -->
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script th:src="@{/js/tarea/tarea.js}"></script>
+    <h1>Lista de Tareas</h1>
+    <p th:text="${mensaje}">Mensaje de prueba</p>
 </body>
 </html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Reino de MIMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-mirate: #614385; /* Morado */
+            --color-imagina: #F1C40F; /* Dorado */
+            --color-muevete: #E67E22; /* Naranja */
+            --color-ordena: #27AE60; /* Verde */
+            --color-primary: #e0f7fa;
+            --color-primary-dark: #89CFF0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--color-primary-dark);
+            color: #333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #70b8d4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn svg {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .category {
+            flex: 1;
+            min-width: 200px;
+            margin: 15px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .category.mirate .category-icon {
+            color: var(--color-mirate);
+        }
+        
+        .category.imagina .category-icon {
+            color: var(--color-imagina);
+        }
+        
+        .category.muevete .category-icon {
+            color: var(--color-muevete);
+        }
+        
+        .category.ordena .category-icon {
+            color: var(--color-ordena);
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .category-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .mirate .category-title {
+            color: var(--color-mirate);
+        }
+        
+        .imagina .category-title {
+            color: var(--color-imagina);
+        }
+        
+        .muevete .category-title {
+            color: var(--color-muevete);
+        }
+        
+        .ordena .category-title {
+            color: var(--color-ordena);
+        }
+        
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .version-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #777;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .version-link:hover {
+            color: var(--color-primary-dark);
+            text-decoration: underline;
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>El Reino de MIMO</h1>
+            <p class="subtitle">Tu Sistema Mágico de Organización Personal</p>
+            <p class="tagline">Transforma tu espacio, transforma tu vida</p>
+            
+            <a href="/tareas" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Ver mis Tareas del Reino
+            </a>
+        </header>
+        
+        <hr />
+        
+        <div class="categories">
+            <div class="category mirate">
+                <div class="category-icon">😊</div>
+                <h3 class="category-title">Mírate</h3>
+                <p class="category-description">Conoce tus necesidades y hábitos</p>
+            </div>
+            
+            <div class="category imagina">
+                <div class="category-icon">⭐</div>
+                <h3 class="category-title">Imagina</h3>
+                <p class="category-description">Visualiza tu espacio ideal</p>
+            </div>
+            
+            <div class="category muevete">
+                <div class="category-icon">🏆</div>
+                <h3 class="category-title">Muévete</h3>
+                <p class="category-description">Actúa para lograr el cambio</p>
+            </div>
+            
+            <div class="category ordena">
+                <div class="category-icon">📂</div>
+                <h3 class="category-title">Ordena</h3>
+                <p class="category-description">Mantén tu espacio organizado</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a th:href="@{/websim}" class="btn">Probar versión websim.ai</a>
+            <br>
+            <a href="/tareas" class="version-link">Acceder a la versión Thymeleaf</a>
+        </div>
+    </div>
+</body>
+</html>

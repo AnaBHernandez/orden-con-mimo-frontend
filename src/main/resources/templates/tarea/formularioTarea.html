@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Tarea - El Reino de MIMO</title>
+    <style>
+        :root {
+            --mimo-primary: #98D8C8;
+            --mimo-secondary: #89CFF0;
+            --mimo-accent: #F5E6A8;
+            --mimo-text: #2A4747;
+            --mirate-color: #614385;
+            --imagina-color: #F1C40F;
+            --muevete-color: #E67E22;
+            --ordena-color: #27AE60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: Arial, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"], 
+        textarea, 
+        select, 
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--mimo-primary);
+            color: var(--mimo-text);
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: var(--mimo-text);
+        }
+        
+        .actions {
+            margin-top: 20px;
+            text-align: right;
+        }
+        
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${tarea.id != null ? 'Editar Tarea' : 'Nueva Tarea'}">Nueva Tarea</h1>
+        
+        <div class="form-container">
+            <!-- Mostrar errores si hay -->
+            <div class="error" th:if="${error}" th:text="${error}"></div>
+            
+            <form th:action="${tarea.id != null ? '/tareas/editar/' + tarea.id : '/tareas/nueva'}" method="post" th:object="${tarea}">
+                <input type="hidden" th:field="*{id}" />
+                
+                <div class="form-group">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" th:field="*{titulo}" required />
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" th:field="*{categoria}" required>
+                        <option value="MIRATE">Mírate - Conoce tus necesidades</option>
+                        <option value="IMAGINA">Imagina - Visualiza tu espacio ideal</option>
+                        <option value="MUEVETE">Muévete - Actúa para lograr el cambio</option>
+                        <option value="ORDENA">Ordena - Mantén tu espacio organizado</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaLimite">Fecha límite</label>
+                    <input type="date" id="fechaLimite" th:field="*{fechaLimite}" required />
+                </div>
+                
+                <div class="actions">
+                    <a href="/tareas" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

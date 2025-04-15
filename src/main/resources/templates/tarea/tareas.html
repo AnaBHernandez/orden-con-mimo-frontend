@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Tareas - El Reino de MIMO</title>
+    <style>
+        :root {
+            --mimo-primary: #98D8C8;
+            --mimo-secondary: #89CFF0;
+            --mimo-accent: #F5E6A8;
+            --mimo-text: #2A4747;
+            --mirate-color: #614385;
+            --imagina-color: #F1C40F;
+            --muevete-color: #E67E22;
+            --ordena-color: #27AE60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: Arial, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .task-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .mirate {
+            border-left: 5px solid var(--mirate-color);
+        }
+        
+        .imagina {
+            border-left: 5px solid var(--imagina-color);
+        }
+        
+        .muevete {
+            border-left: 5px solid var(--muevete-color);
+        }
+        
+        .ordena {
+            border-left: 5px solid var(--ordena-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mis Tareas</h1>
+        
+        <div class="actions">
+            <a href="/" class="btn" style="background-color: #f8f9fa; color: var(--mimo-text);">Volver al Inicio</a>
+            <a href="/tareas/nueva" class="btn" style="background-color: var(--mimo-primary); color: var(--mimo-text);">Nueva Tarea</a>
+        </div>
+        
+        <div th:if="${tareas != null && !tareas.isEmpty()}">
+            <div th:each="tarea : ${tareas}" th:class="'task-card ' + ${tarea.categoria == 'Mírate' ? 'mirate' : (tarea.categoria == 'Imagina' ? 'imagina' : (tarea.categoria == 'Muévete' ? 'muevete' : 'ordena'))}">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <h3 style="margin: 0;" th:text="${tarea.titulo}">Título de la tarea</h3>
+                    <span style="background-color: #f8f9fa; padding: 5px 10px; border-radius: 20px;" th:text="${tarea.categoria}">Categoría</span>
+                </div>
+                <p th:text="${tarea.descripcion}">Descripción de la tarea</p>
+                <p>Fecha límite: <span th:text="${#temporals.format(tarea.fechaLimite, 'dd/MM/yyyy')}">01/01/2023</span></p>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                    <a th:href="@{/tareas/editar/{id}(id=${tarea.id})}" class="btn" style="background-color: var(--imagina-color); color: var(--mimo-text);">Editar</a>
+                    <a th:href="@{/tareas/eliminar/{id}(id=${tarea.id})}" class="btn" style="background-color: #f8d7da; color: #721c24;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')">Eliminar</a>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${tareas == null || tareas.isEmpty()}" style="background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
+            <p>No hay tareas disponibles.</p>
+        </div>
+    </div>
+</body>
+</html>

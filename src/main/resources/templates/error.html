@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Orden con MIMO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #98D8C8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .main-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .error-code {
+            font-size: 2rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            background-color: #89CFF0;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="error-icon">⚠️</div>
+        <div class="error-code" th:text="${status}">500</div>
+        <div class="error-message" th:text="${error}">Ha ocurrido un error inesperado.</div>
+        <a th:href="@{/}" class="btn-primary">Volver al inicio</a>
+    </div>
+</body>
+</html>
