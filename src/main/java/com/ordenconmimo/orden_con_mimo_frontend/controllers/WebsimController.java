@@ -24,7 +24,6 @@ public class WebsimController {
 
     public String testApiConnection() {
         try {
-            // Intenta hacer una petición simple al backend
             ResponseEntity<String> response = new RestTemplate().getForEntity(
                     "http://localhost:8082/api/health", String.class);
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba API</title>
+</head>
+<body>
+    <h1>Formulario de prueba</h1>
+    
+    <form action="/prueba/crear" method="post">
+        <div>
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
+        </div>
+        <div>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+        </div>
+        <div>
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" name="categoria" required>
+                <option value="MIRATE">Mírate</option>
+                <option value="IMAGINA">Imagina</option>
+                <option value="MUEVETE">Muévete</option>
+                <option value="ORDENA">Ordena</option>
+            </select>
+        </div>
+        <button type="submit">Crear tarea</button>
+    </form>
+</body>
+</html>

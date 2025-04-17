@@ -44,7 +44,7 @@ El esquema de colores principal de la aplicación es:
 4. Acceder a la aplicación en el navegador:
 ./mvnw spring-boot:run
 
-Nota: Asegúrate de que el backend esté ejecutándose en http://localhost:8080 para que la comunicación con la API funcione correctamente.
+Nota: Asegúrate de que el backend esté ejecutándose en http://localhost:8082 para que la comunicación con la API funcione correctamente.
 
 ```
 📂 Estructura del proyecto

@@ -1,11 +1,11 @@
 // src/main/resources/static/js/comun/config.js
 
 // Constantes de configuración
-const API_BASE_URL = "http://localhost:8080/api"; // URL base de la API
+const API_BASE_URL = "http://localhost:8082/api"; // URL base de la API
 const API_TIMEOUT = 5000; // Tiempo de espera en milisegundos
 
 // Configuración de modo simulación
-const MOCK_MODE = true; // Cambiar a false cuando el backend esté listo
+const MOCK_MODE = false; // Cambiar a false cuando el backend esté listo
 
 // Datos de ejemplo para simular respuestas API (categorías MIMO con sus colores)
 const MOCK_DATA = {

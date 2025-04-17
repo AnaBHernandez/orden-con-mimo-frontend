@@ -8,7 +8,6 @@ public class TareaTest {
 
     @Test
     public void testConstructorAndGetters() {
-        // Arrange
         Long id = 1L;
         String titulo = "Test Tarea";
         String descripcion = "Descripción de prueba";
@@ -16,10 +15,8 @@ public class TareaTest {
         LocalDate fechaLimite = LocalDate.now();
         boolean completada = false;
 
-        // Act
         Tarea tarea = new Tarea(id, titulo, descripcion, categoria, fechaLimite, completada);
 
-        // Assert
         assertEquals(id, tarea.getId());
         assertEquals(titulo, tarea.getTitulo());
         assertEquals(descripcion, tarea.getDescripcion());
@@ -30,7 +27,6 @@ public class TareaTest {
 
     @Test
     public void testSetters() {
-        // Arrange
         Tarea tarea = new Tarea();
         Long id = 2L;
         String titulo = "Tarea Actualizada";
@@ -39,7 +35,6 @@ public class TareaTest {
         LocalDate fechaLimite = LocalDate.now().plusDays(1);
         boolean completada = true;
 
-        // Act
         tarea.setId(id);
         tarea.setTitulo(titulo);
         tarea.setDescripcion(descripcion);
@@ -47,7 +42,6 @@ public class TareaTest {
         tarea.setFechaLimite(fechaLimite);
         tarea.setCompletada(completada);
 
-        // Assert
         assertEquals(id, tarea.getId());
         assertEquals(titulo, tarea.getTitulo());
         assertEquals(descripcion, tarea.getDescripcion());
@@ -58,10 +52,8 @@ public class TareaTest {
 
     @Test
     public void testDefaultConstructor() {
-        // Act
         Tarea tarea = new Tarea();
 
-        // Assert
         assertNull(tarea.getId());
         assertNull(tarea.getTitulo());
         assertNull(tarea.getDescripcion());

@@ -16,91 +16,7 @@
             --ordena-color: #27AE60;
         }
         
-        body {
-            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
-            font-family: Arial, sans-serif;
-            color: var(--mimo-text);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .form-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        input[type="text"], 
-        textarea, 
-        select, 
-        input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-primary {
-            background-color: var(--mimo-primary);
-            color: var(--mimo-text);
-        }
-        
-        .btn-secondary {
-            background-color: #f8f9fa;
-            color: var(--mimo-text);
-        }
-        
-        .actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-        
-        .error {
-            color: #721c24;
-            background-color: #f8d7da;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
+        /* Estilos CSS aquí... */
     </style>
 </head>
 <body>
@@ -111,7 +27,8 @@
             <!-- Mostrar errores si hay -->
             <div class="error" th:if="${error}" th:text="${error}"></div>
             
-            <form th:action="@{/tareas/guardar}" method="post" th:object="${tarea}"></form>
+            <!-- Formulario corregido con action apuntando a /tareas/guardar -->
+            <form th:action="@{/tareas/guardar}" method="post" th:object="${tarea}">
                 <input type="hidden" th:field="*{id}" />
                 
                 <div class="form-group">

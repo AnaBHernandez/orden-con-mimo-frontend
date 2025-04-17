@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+*.xml
+.bash_history
+ejercicio*.java
+Scanner.java
+*.json

@@ -47,7 +47,6 @@ public class TareaControllerTest {
 
     @Test
     public void testListarTareas() throws Exception {
-        // Arrange
         List<Tarea> tareas = Arrays.asList(
             tareaEjemplo,
             new Tarea(2L, "Test2", "Descripción2", "IMAGINA", LocalDate.now(), true)
@@ -55,7 +54,6 @@ public class TareaControllerTest {
         
         when(tareaApiService.obtenerTareas()).thenReturn(tareas);
         
-        // Act & Assert
         mockMvc.perform(get("/api/tareas"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -67,10 +65,8 @@ public class TareaControllerTest {
     
     @Test
     public void testObtenerTarea() throws Exception {
-        // Arrange
         when(tareaApiService.obtenerTareaPorId(1L)).thenReturn(tareaEjemplo);
         
-        // Act & Assert
         mockMvc.perform(get("/api/tareas/1"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -82,10 +78,8 @@ public class TareaControllerTest {
     
     @Test
     public void testObtenerTarea_NotFound() throws Exception {
-        // Arrange
         when(tareaApiService.obtenerTareaPorId(999L)).thenReturn(null);
         
-        // Act & Assert
         mockMvc.perform(get("/api/tareas/999"))
             .andExpect(status().isNotFound());
         
@@ -100,7 +94,6 @@ public class TareaControllerTest {
         
         when(tareaApiService.guardarTarea(any(Tarea.class))).thenReturn(tareaGuardada);
         
-        // Act & Assert
         mockMvc.perform(post("/api/tareas")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(nuevaTarea)))
@@ -114,12 +107,10 @@ public class TareaControllerTest {
     
     @Test
     public void testActualizarTarea() throws Exception {
-        // Arrange
         Tarea tareaActualizada = new Tarea(1L, "Actualizada", "Nueva descripción", "MUEVETE", LocalDate.now(), true);
         
         when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(tareaActualizada);
         
-        // Act & Assert
         mockMvc.perform(put("/api/tareas/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(tareaActualizada)))
@@ -133,10 +124,8 @@ public class TareaControllerTest {
     
     @Test
     public void testActualizarTarea_IdMismatch() throws Exception {
-        // Arrange
         Tarea tareaActualizada = new Tarea(1L, "Actualizada", "Nueva descripción", "MUEVETE", LocalDate.now(), true);
         
-        // Act & Assert - Intentamos actualizar tarea 2 con datos de tarea 1
         mockMvc.perform(put("/api/tareas/2")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(tareaActualizada)))
@@ -147,10 +136,8 @@ public class TareaControllerTest {
     
     @Test
     public void testEliminarTarea() throws Exception {
-        // Arrange
         doNothing().when(tareaApiService).eliminarTarea(anyLong());
         
-        // Act & Assert
         mockMvc.perform(delete("/api/tareas/1"))
             .andExpect(status().isNoContent());
         

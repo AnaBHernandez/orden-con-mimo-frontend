@@ -36,7 +36,7 @@ public class TareaApiServiceTest {
     private TareaApiService tareaApiService;
 
     private Tarea tareaEjemplo;
-    private final String API_URL = "http://localhost:8080/api/tareas";
+    private final String API_URL = "http://localhost:8082/api/tareas";
 
     @BeforeEach
     public void setup() {

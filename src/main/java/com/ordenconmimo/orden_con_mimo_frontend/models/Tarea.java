@@ -39,6 +39,19 @@ public class Tarea {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+    
+    public String getNombre() {
+        return this.titulo;
+    }
+    public void setNombre(String nombre) {
+        this.titulo = nombre;
+    }
+    public String getCategoriaMimo() {
+        return this.categoria;
+    }
+    public void setCategoriaMimo(String categoriaMimo) {
+        this.categoria = categoriaMimo;
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -86,18 +99,19 @@ public class Tarea {
                 System.err.println("No se pudo convertir la fecha: " + fechaLimiteStr);
             }
         }
-    }
+        
+    }    
 
     @Override
-public String toString() {
-    return "Tarea{" +
-            "id=" + id +
-            ", titulo='" + titulo + '\'' +
-            ", descripcion='" + descripcion + '\'' +
-            ", categoria='" + categoria + '\'' +
-            ", fechaLimite=" + fechaLimite +
-            ", fechaLimiteStr='" + fechaLimiteStr + '\'' +
-            ", completada=" + completada +
-            '}';
-}
+    public String toString() {
+        return "Tarea{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", fechaLimite=" + fechaLimite +
+                ", fechaLimiteStr='" + fechaLimiteStr + '\'' +
+                ", completada=" + completada +
+                '}';
+    }
 }

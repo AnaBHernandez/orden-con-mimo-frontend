@@ -8,7 +8,7 @@ public class ApiConnectionTest {
     public static void main(String[] args) {
         try {
             RestTemplate testTemplate = new RestTemplate();
-            String url = "http://localhost:8080/api/tareas";
+            String url = "http://localhost:8082/api/tareas";
             System.out.println("Intentando conectar a: " + url);
             ResponseEntity<String> response = testTemplate.getForEntity(url, String.class);
             System.out.println("Respuesta: " + response.getStatusCode());
