@@ -79,7 +79,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Mis Tareas</h1>
+        <h1>Mis Tareas del Reino</h1>
         
         <div class="actions">
             <a href="/" class="btn" style="background-color: #f8f9fa; color: var(--mimo-text);">Volver al Inicio</a>
@@ -95,8 +95,8 @@
                 <p th:text="${tarea.descripcion}">Descripción de la tarea</p>
                 <p>Fecha límite: <span th:text="${#temporals.format(tarea.fechaLimite, 'dd/MM/yyyy')}">01/01/2023</span></p>
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-                    <a th:href="@{/tareas/editar/{id}(id=${tarea.id})}" class="btn" style="background-color: var(--imagina-color); color: var(--mimo-text);">Editar</a>
-                    <a th:href="@{/tareas/eliminar/{id}(id=${tarea.id})}" class="btn" style="background-color: #f8d7da; color: #721c24;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')">Eliminar</a>
+                    <a th:href="@{/tareas/{id}/editar(id=${tarea.id})}" class="btn" style="background-color: var(--imagina-color); color: var(--mimo-text);">Editar</a>
+                    <a th:href="@{/tareas/{id}/eliminar(id=${tarea.id})}" class="btn" style="background-color: #f8d7da; color: #721c24;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')">Eliminar</a>
                 </div>
             </div>
         </div>

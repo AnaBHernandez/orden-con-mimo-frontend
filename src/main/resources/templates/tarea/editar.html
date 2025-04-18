@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Tarea - El Reino de MIMO</title>
+    <style>
+        :root {
+            --mimo-primary: #98D8C8;
+            --mimo-secondary: #89CFF0;
+            --mimo-accent: #F5E6A8;
+            --mimo-text: #2A4747;
+            --mirate-color: #614385;
+            --imagina-color: #F1C40F;
+            --muevete-color: #E67E22;
+            --ordena-color: #27AE60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: Arial, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"], 
+        textarea, 
+        select,
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Tarea</h1>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}">Error</div>
+        
+        <form th:action="@{/tareas/{id}/actualizar(id=${tarea.id})}" th:object="${tarea}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            
+            <div class="form-group">
+                <label for="titulo">Título</label>
+                <input type="text" th:field="*{titulo}" id="titulo" required />
+            </div>
+            
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea th:field="*{descripcion}" id="descripcion"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="categoria">Categoría MIMO</label>
+                <select th:field="*{categoria}" id="categoria" required>
+                    <option value="MIRATE">Mírate</option>
+                    <option value="IMAGINA">Imagina</option>
+                    <option value="MUEVETE">Muévete</option>
+                    <option value="ORDENA">Ordena</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="fechaLimite">Fecha Límite</label>
+                <input type="date" th:field="*{fechaLimite}" id="fechaLimite" />
+            </div>
+            
+            <div class="form-group">
+                <label for="completada">Completada</label>
+                <input type="checkbox" th:field="*{completada}" id="completada" />
+            </div>
+            
+            <div class="actions">
+                <a th:href="@{/tareas}" class="btn" style="background-color: #f8f9fa; color: var(--mimo-text);">Cancelar</a>
+                <button type="submit" class="btn" style="background-color: var(--imagina-color); color: var(--mimo-text);">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

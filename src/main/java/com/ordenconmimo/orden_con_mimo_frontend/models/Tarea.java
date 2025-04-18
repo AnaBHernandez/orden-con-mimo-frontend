@@ -1,7 +1,9 @@
 package com.ordenconmimo.orden_con_mimo_frontend.models;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tarea {
     private Long id;
     private String titulo;
@@ -10,6 +12,7 @@ public class Tarea {
     private LocalDate fechaLimite;
     private boolean completada;
     private String fechaLimiteStr;
+    private LocalDate fechaCreacion;
 
     public Tarea() {
     }
@@ -39,16 +42,19 @@ public class Tarea {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
+
     public String getNombre() {
         return this.titulo;
     }
+
     public void setNombre(String nombre) {
         this.titulo = nombre;
     }
+
     public String getCategoriaMimo() {
         return this.categoria;
     }
+
     public void setCategoriaMimo(String categoriaMimo) {
         this.categoria = categoriaMimo;
     }
@@ -99,8 +105,15 @@ public class Tarea {
                 System.err.println("No se pudo convertir la fecha: " + fechaLimiteStr);
             }
         }
-        
-    }    
+    }
+
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
 
     @Override
     public String toString() {
@@ -112,6 +125,7 @@ public class Tarea {
                 ", fechaLimite=" + fechaLimite +
                 ", fechaLimiteStr='" + fechaLimiteStr + '\'' +
                 ", completada=" + completada +
+                ", fechaCreacion=" + fechaCreacion +
                 '}';
     }
 }

@@ -38,18 +38,23 @@ public class TareaController {
     }
 
     @GetMapping("/{id}/editar")
-    public String editarTareaForm(@PathVariable Long id, Model model) {
-        try {
-            Tarea tarea = tareaApiService.obtenerTareaPorId(id);
-            if (tarea == null) {
-                return "redirect:/tareas?error=Tarea no encontrada";
-            }
-            model.addAttribute("tarea", tarea);
-            return "tarea/editar";
-        } catch (Exception e) {
-            return "redirect:/tareas?error=" + e.getMessage();
-        }
+public String editarTareaForm(@PathVariable Long id, Model model) {
+    Tarea tarea = tareaApiService.obtenerTareaPorId(id);
+    
+    if (tarea == null) {
+        return "redirect:/tareas?error=Tarea no encontrada";
     }
+    
+  
+    System.out.println("Mostrando tarea para editar: " + tarea.getId());
+    System.out.println("Título: " + tarea.getTitulo());
+    System.out.println("Categoría: " + tarea.getCategoria());
+    System.out.println("Fecha límite: " + tarea.getFechaLimite());
+    System.out.println("Completada: " + tarea.isCompletada());
+    
+    model.addAttribute("tarea", tarea);
+    return "tarea/editar";
+}
 
     @GetMapping("/{id}/eliminar")
     public String eliminarTarea(@PathVariable Long id) {

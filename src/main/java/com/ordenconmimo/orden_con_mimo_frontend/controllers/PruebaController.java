@@ -1,6 +1,6 @@
 package com.ordenconmimo.orden_con_mimo_frontend.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
+
 import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
 
-import java.time.LocalDate;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpEntity;
@@ -29,7 +29,6 @@ public class PruebaController {
     private final RestTemplate restTemplate;
     private final String apiUrl;
 
-    @Autowired
     public PruebaController(TareaApiService tareaApiService, RestTemplate restTemplate) {
         this.tareaApiService = tareaApiService;
         this.restTemplate = restTemplate;
@@ -87,4 +86,5 @@ public class PruebaController {
             return "Error: " + e.getMessage();
         }
     }
+    
 }

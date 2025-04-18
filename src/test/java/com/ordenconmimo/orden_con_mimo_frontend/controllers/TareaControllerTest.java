@@ -1,15 +1,12 @@
 package com.ordenconmimo.orden_con_mimo_frontend.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
 import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -32,15 +29,12 @@ public class TareaControllerTest {
     private TareaController tareaController;
 
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper;
     private Tarea tareaEjemplo;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(tareaController).build();
-        objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules(); // Para manejar LocalDate
         
         tareaEjemplo = new Tarea(1L, "Test Tarea", "Descripción de prueba", "MIRATE", LocalDate.now(), false);
     }
@@ -54,55 +48,94 @@ public class TareaControllerTest {
         
         when(tareaApiService.obtenerTareas()).thenReturn(tareas);
         
-        mockMvc.perform(get("/api/tareas"))
+        mockMvc.perform(get("/tareas"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$[0].id").value(1))
-            .andExpect(jsonPath("$[1].id").value(2));
-        
-        verify(tareaApiService, times(1)).obtenerTareas();
+            .andExpect(view().name("tarea/list"))
+            .andExpect(model().attributeExists("tareas"));
     }
     
     @Test
-    public void testObtenerTarea() throws Exception {
+    public void testListarTareasConError() throws Exception {
+        when(tareaApiService.obtenerTareas()).thenThrow(new RuntimeException("Error de prueba"));
+        
+        mockMvc.perform(get("/tareas"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("tarea/list"))
+            .andExpect(model().attributeExists("errorMessage"));
+    }
+    
+    @Test
+    public void testEditarTareaForm() throws Exception {
         when(tareaApiService.obtenerTareaPorId(1L)).thenReturn(tareaEjemplo);
         
-        mockMvc.perform(get("/api/tareas/1"))
+        mockMvc.perform(get("/tareas/1/editar"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(1))
-            .andExpect(jsonPath("$.titulo").value("Test Tarea"));
-        
-        verify(tareaApiService, times(1)).obtenerTareaPorId(1L);
+            .andExpect(view().name("tarea/editar"))
+            .andExpect(model().attributeExists("tarea"));
     }
     
     @Test
-    public void testObtenerTarea_NotFound() throws Exception {
+    public void testEditarTareaFormNotFound() throws Exception {
         when(tareaApiService.obtenerTareaPorId(999L)).thenReturn(null);
         
-        mockMvc.perform(get("/api/tareas/999"))
-            .andExpect(status().isNotFound());
-        
-        verify(tareaApiService, times(1)).obtenerTareaPorId(999L);
+        mockMvc.perform(get("/tareas/999/editar"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/tareas?error=*"));
     }
     
     @Test
-    public void testCrearTarea() throws Exception {
-        // Arrange
-        Tarea nuevaTarea = new Tarea(null, "Nueva", "Descripción", "ORDENA", LocalDate.now(), false);
-        Tarea tareaGuardada = new Tarea(3L, "Nueva", "Descripción", "ORDENA", LocalDate.now(), false);
+    public void testEliminarTarea() throws Exception {
+        when(tareaApiService.eliminarTarea(1L)).thenReturn(true);
+        
+        mockMvc.perform(get("/tareas/1/eliminar"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/tareas?mensaje=*"));
+    }
+    
+    @Test
+    public void testEliminarTareaError() throws Exception {
+        when(tareaApiService.eliminarTarea(1L)).thenReturn(false);
+        
+        mockMvc.perform(get("/tareas/1/eliminar"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/tareas?error=*"));
+    }
+    
+    @Test
+    public void testMostrarFormularioNuevaTarea() throws Exception {
+        mockMvc.perform(get("/tareas/nueva"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("tarea/crear"))
+            .andExpect(model().attributeExists("tarea"));
+    }
+    
+    @Test
+    public void testGuardarTarea() throws Exception {
+        Tarea nuevaTarea = new Tarea(null, "Nueva Tarea", "Descripción", "ORDENA", LocalDate.now(), false);
+        Tarea tareaGuardada = new Tarea(3L, "Nueva Tarea", "Descripción", "ORDENA", LocalDate.now(), false);
         
         when(tareaApiService.guardarTarea(any(Tarea.class))).thenReturn(tareaGuardada);
         
-        mockMvc.perform(post("/api/tareas")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(nuevaTarea)))
-            .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(3))
-            .andExpect(jsonPath("$.titulo").value("Nueva"));
+        mockMvc.perform(post("/tareas/guardar")
+                .param("titulo", "Nueva Tarea")
+                .param("descripcion", "Descripción")
+                .param("categoria", "ORDENA")
+                .param("fechaLimite", LocalDate.now().toString()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/tareas?mensaje=*"));
+    }
+    
+    @Test
+    public void testGuardarTareaError() throws Exception {
+        when(tareaApiService.guardarTarea(any(Tarea.class))).thenReturn(null);
         
-        verify(tareaApiService, times(1)).guardarTarea(any(Tarea.class));
+        mockMvc.perform(post("/tareas/guardar")
+                .param("titulo", "Nueva Tarea")
+                .param("descripcion", "Descripción")
+                .param("categoria", "ORDENA"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("tarea/crear"))
+            .andExpect(model().attributeExists("error"));
     }
     
     @Test
@@ -111,36 +144,27 @@ public class TareaControllerTest {
         
         when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(tareaActualizada);
         
-        mockMvc.perform(put("/api/tareas/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(tareaActualizada)))
+        mockMvc.perform(post("/tareas/1/actualizar")
+                .param("id", "1")
+                .param("titulo", "Actualizada")
+                .param("descripcion", "Nueva descripción")
+                .param("categoria", "MUEVETE")
+                .param("completada", "true"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/tareas?mensaje=*"));
+    }
+    
+    @Test
+    public void testActualizarTareaError() throws Exception {
+        when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(null);
+        
+        mockMvc.perform(post("/tareas/1/actualizar")
+                .param("id", "1")
+                .param("titulo", "Actualizada")
+                .param("descripcion", "Nueva descripción")
+                .param("categoria", "MUEVETE"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.titulo").value("Actualizada"))
-            .andExpect(jsonPath("$.completada").value(true));
-        
-        verify(tareaApiService, times(1)).actualizarTarea(any(Tarea.class));
-    }
-    
-    @Test
-    public void testActualizarTarea_IdMismatch() throws Exception {
-        Tarea tareaActualizada = new Tarea(1L, "Actualizada", "Nueva descripción", "MUEVETE", LocalDate.now(), true);
-        
-        mockMvc.perform(put("/api/tareas/2")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(tareaActualizada)))
-            .andExpect(status().isBadRequest());
-        
-        verify(tareaApiService, never()).actualizarTarea(any(Tarea.class));
-    }
-    
-    @Test
-    public void testEliminarTarea() throws Exception {
-        doNothing().when(tareaApiService).eliminarTarea(anyLong());
-        
-        mockMvc.perform(delete("/api/tareas/1"))
-            .andExpect(status().isNoContent());
-        
-        verify(tareaApiService, times(1)).eliminarTarea(1L);
+            .andExpect(view().name("tarea/editar"))
+            .andExpect(model().attributeExists("error"));
     }
 }

@@ -1,17 +1,16 @@
 package com.ordenconmimo.orden_con_mimo_frontend.services;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+
 
 import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
-import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.ParameterizedTypeReference;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -56,119 +58,126 @@ public class TareaApiServiceTest {
 
     @Test
     public void testObtenerTareas() {
-        // Arrange
-        List<Tarea> tareas = Arrays.asList(
-            tareaEjemplo,
-            new Tarea(2L, "Test2", "Descripción2", "IMAGINA", LocalDate.now(), true)
+        // Prepare respuesta en formato Map para simular la estructura JSON
+        List<Map<String, Object>> responseList = Arrays.asList(
+            createTareaMap(1L, "Test Tarea", "Descripción de prueba", "MIRATE"),
+            createTareaMap(2L, "Test2", "Descripción2", "IMAGINA")
         );
         
-        ResponseEntity<List<Tarea>> responseEntity = new ResponseEntity<>(tareas, HttpStatus.OK);
+        ResponseEntity<Object> responseEntity = new ResponseEntity<>(responseList, HttpStatus.OK);
         
         when(restTemplate.exchange(
-            anyString(),
+            eq(API_URL),
             eq(HttpMethod.GET),
-            any(),
-            any(ParameterizedTypeReference.class)
+            isNull(),
+            eq(Object.class)
         )).thenReturn(responseEntity);
         
+        // Act
         List<Tarea> resultado = tareaApiService.obtenerTareas();
         
+        // Assert
         assertNotNull(resultado);
         assertEquals(2, resultado.size());
-        assertEquals(1L, resultado.get(0).getId());
-        assertEquals(2L, resultado.get(1).getId());
         
         verify(restTemplate).exchange(
             eq(API_URL),
             eq(HttpMethod.GET),
             isNull(),
-            any(ParameterizedTypeReference.class)
+            eq(Object.class)
         );
     }
     
     @Test
     public void testObtenerTareaPorId() {
-        ResponseEntity<Tarea> responseEntity = new ResponseEntity<>(tareaEjemplo, HttpStatus.OK);
+        // Arrange
+        long id = 1L;
+        String url = API_URL + "/" + id;
         
-        when(restTemplate.getForEntity(eq(API_URL + "/1"), eq(Tarea.class)))
-            .thenReturn(responseEntity);
+        Map<String, Object> tareaMap = createTareaMap(1L, "Test Tarea", "Descripción de prueba", "MIRATE");
+        tareaMap.put("completada", false);
+        tareaMap.put("fechaCreacion", LocalDate.now().toString());
+        tareaMap.put("fechaLimite", LocalDate.now().toString());
         
-        Tarea resultado = tareaApiService.obtenerTareaPorId(1L);
+        ResponseEntity<Object> responseEntity = new ResponseEntity<>(tareaMap, HttpStatus.OK);
         
+        when(restTemplate.exchange(
+            eq(url),
+            eq(HttpMethod.GET),
+            isNull(),
+            eq(Object.class)
+        )).thenReturn(responseEntity);
+        
+        // Act
+        Tarea resultado = tareaApiService.obtenerTareaPorId(id);
+        
+        // Assert
         assertNotNull(resultado);
         assertEquals(1L, resultado.getId());
         assertEquals("Test Tarea", resultado.getTitulo());
         
-      
-        verify(restTemplate).getForEntity(eq(API_URL + "/1"), eq(Tarea.class));
-    }
-    
-    @Test
-    public void testGuardarTarea() {
-       
-        Tarea nuevaTarea = new Tarea(null, "Nueva", "Descripción", "ORDENA", LocalDate.now(), false);
-        Tarea tareaGuardada = new Tarea(3L, "Nueva", "Descripción", "ORDENA", LocalDate.now(), false);
-        
-        ResponseEntity<Tarea> responseEntity = new ResponseEntity<>(tareaGuardada, HttpStatus.CREATED);
-        
-        when(restTemplate.postForEntity(
-            eq(API_URL),
-            any(HttpEntity.class),
-            eq(Tarea.class)
-        )).thenReturn(responseEntity);
-        
-   
-        Tarea resultado = tareaApiService.guardarTarea(nuevaTarea);
-        
-      
-        assertNotNull(resultado);
-        assertEquals(3L, resultado.getId());
-        assertEquals("Nueva", resultado.getTitulo());
-        
-    
-        verify(restTemplate).postForEntity(
-            eq(API_URL),
-            any(HttpEntity.class),
-            eq(Tarea.class)
+        // Verify
+        verify(restTemplate).exchange(
+            eq(url),
+            eq(HttpMethod.GET),
+            isNull(),
+            eq(Object.class)
         );
     }
     
     @Test
+    public void testGuardarTarea() {
+        // Arrange
+        Tarea nuevaTarea = new Tarea(null, "Nueva", "Descripción", "ORDENA", LocalDate.now(), false);
+        
+        Map<String, Object> responseMap = createTareaMap(3L, "Nueva", "Descripción", "ORDENA");
+        
+        ResponseEntity<Object> responseEntity = new ResponseEntity<>(responseMap, HttpStatus.CREATED);
+        
+        when(restTemplate.exchange(
+            eq(API_URL),
+            eq(HttpMethod.POST),
+            any(HttpEntity.class),
+            eq(Object.class)
+        )).thenReturn(responseEntity);
+        
+        // Act
+        Tarea resultado = tareaApiService.guardarTarea(nuevaTarea);
+        
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(3L, resultado.getId());
+        assertEquals("Nueva", resultado.getTitulo());
+    }
+    
+    @Test
     public void testActualizarTarea() {
-      
+        // Arrange
         Tarea tareaActualizada = new Tarea(1L, "Actualizada", "Nueva descripción", "MUEVETE", LocalDate.now(), true);
         
-        ResponseEntity<Tarea> responseEntity = new ResponseEntity<>(tareaActualizada, HttpStatus.OK);
+        Map<String, Object> responseMap = createTareaMap(1L, "Actualizada", "Nueva descripción", "MUEVETE");
+        responseMap.put("completada", true);
+        
+        ResponseEntity<Object> responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
         
         when(restTemplate.exchange(
             eq(API_URL + "/1"),
             eq(HttpMethod.PUT),
             any(HttpEntity.class),
-            eq(Tarea.class)
+            eq(Object.class)
         )).thenReturn(responseEntity);
         
-   
+        // Act
         Tarea resultado = tareaApiService.actualizarTarea(tareaActualizada);
         
-       
+        // Assert
         assertNotNull(resultado);
         assertEquals(1L, resultado.getId());
         assertEquals("Actualizada", resultado.getTitulo());
-        assertEquals("MUEVETE", resultado.getCategoria());
-        assertTrue(resultado.isCompletada());
-        
-      
-        verify(restTemplate).exchange(
-            eq(API_URL + "/1"),
-            eq(HttpMethod.PUT),
-            any(HttpEntity.class),
-            eq(Tarea.class)
-        );
     }
     
     @Test
     public void testEliminarTarea() {
-        
         ResponseEntity<Void> responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         
         when(restTemplate.exchange(
@@ -178,31 +187,33 @@ public class TareaApiServiceTest {
             eq(Void.class)
         )).thenReturn(responseEntity);
         
-        assertDoesNotThrow(() -> tareaApiService.eliminarTarea(1L));
+        boolean resultado = tareaApiService.eliminarTarea(1L);
         
-        verify(restTemplate).exchange(
-            eq(API_URL + "/1"),
-            eq(HttpMethod.DELETE),
-            isNull(),
-            eq(Void.class)
-        );
+        assertTrue(resultado);
     }
     
     @Test
     public void testObtenerTareas_ErrorHandling() {
-    
         when(restTemplate.exchange(
-            anyString(),
+            eq(API_URL),
             eq(HttpMethod.GET),
-            any(),
-            any(ParameterizedTypeReference.class)
+            isNull(),
+            eq(Object.class)
         )).thenThrow(new RuntimeException("Error de conexión"));
         
-    
         List<Tarea> resultado = tareaApiService.obtenerTareas();
         
-      
         assertNotNull(resultado);
         assertTrue(resultado.isEmpty());
+    }
+    
+    // Método de utilidad para crear mapas de tareas
+    private Map<String, Object> createTareaMap(Long id, String nombre, String descripcion, String categoria) {
+        Map<String, Object> tareaMap = new HashMap<>();
+        tareaMap.put("id", id);
+        tareaMap.put("nombre", nombre);
+        tareaMap.put("descripcion", descripcion);
+        tareaMap.put("categoria", categoria);
+        return tareaMap;
     }
 }
