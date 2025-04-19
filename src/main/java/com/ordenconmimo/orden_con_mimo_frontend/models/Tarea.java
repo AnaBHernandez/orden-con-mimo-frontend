@@ -115,6 +115,12 @@ public class Tarea {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public void actualizarFechaLimiteStr() {
+        if (this.fechaLimite != null) {
+            this.fechaLimiteStr = this.fechaLimite.toString();
+        }
+    }
+
     @Override
     public String toString() {
         return "Tarea{" +
