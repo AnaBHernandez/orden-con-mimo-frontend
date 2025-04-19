@@ -251,12 +251,10 @@
             </a>
         </div>
         
-        <!-- Mensaje de error (si existe) -->
         <div class="error-message" th:if="${errorMessage != null}">
             <p th:text="${errorMessage}">Mensaje de error</p>
         </div>
         
-        <!-- Si hay tareas, mostrar la lista -->
         <div class="task-list" th:if="${!tareas.empty}">
             <div th:each="tarea : ${tareas}" th:class="${'task-card ' + #strings.toLowerCase(tarea.categoria)}">
                 <div class="task-card-header">
@@ -291,7 +289,6 @@
             </div>
         </div>
         
-        <!-- Si no hay tareas, mostrar estado vacío -->
         <div class="empty-state" th:if="${tareas.empty}">
             <p>No hay tareas pendientes. ¡Añade una!</p>
             <a href="/tareas/nueva" class="btn btn-primary">
