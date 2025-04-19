@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import java.util.Map;
-
-
 import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
 import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
 
@@ -32,7 +30,6 @@ public class WebsimController {
             return "Error de conexión: " + e.getMessage();
         }
     }
-    
 
     @PostMapping("/api/tareas")
     @ResponseBody
