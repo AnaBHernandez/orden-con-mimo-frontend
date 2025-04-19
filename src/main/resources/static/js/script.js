@@ -1,5 +1,3 @@
-// Basic Page Navigation & Placeholder Task Data
-
 const pages = document.querySelectorAll('.page');
 const homePage = document.getElementById('home-page');
 const taskListPage = document.getElementById('task-list-page');
@@ -13,14 +11,12 @@ const taskForm = document.getElementById('task-form');
 const taskList = document.getElementById('task-list');
 const formTitle = document.getElementById('form-title');
 
-// Form Inputs
 const taskIdInput = document.getElementById('task-id');
 const taskTitleInput = document.getElementById('task-title-input');
 const taskDescInput = document.getElementById('task-desc-input');
 const taskCategorySelect = document.getElementById('task-category-select');
 const taskDeadlineInput = document.getElementById('task-deadline-input');
 
-// --- Basic Navigation ---
 
 function showPage(pageId) {
     pages.forEach(page => {
@@ -29,7 +25,7 @@ function showPage(pageId) {
             page.classList.add('active');
         }
     });
-    window.scrollTo(0, 0); // Scroll to top when changing pages
+    window.scrollTo(0, 0); 
 }
 
 if (viewTasksBtn) {
@@ -43,8 +39,8 @@ if (backToHomeBtn) {
 if (addTaskBtn) {
     addTaskBtn.addEventListener('click', () => {
         formTitle.textContent = 'Crear Nueva Tarea';
-        taskForm.reset(); // Clear form
-        taskIdInput.value = ''; // Ensure no hidden ID
+        taskForm.reset(); 
+        taskIdInput.value = '';
         showPage('task-form-page');
     });
 }
@@ -53,12 +49,11 @@ if (cancelEditBtn) {
     cancelEditBtn.addEventListener('click', () => {
          taskForm.reset();
          taskIdInput.value = '';
-         showPage('task-list-page'); // Go back to task list
+         showPage('task-list-page');
     });
 }
 
-// --- Task Data Management ---
-// In a real app, this would come from localStorage or a backend API
+
 
 let tasks = [
     { id: 1, title: "Despejar la Mesa del Comedor", description: "Quitar todo lo que no pertenece a la mesa.", category: "muevete", deadline: "2024-08-10" },
@@ -66,9 +61,8 @@ let tasks = [
     { id: 3, title: "Revisar Ropa del Armario", description: "¿Qué uso realmente? ¿Qué puedo donar?", category: "mirate", deadline: "" },
     { id: 4, title: "Organizar Cajón de Escritorio", description: "Asignar un lugar a cada cosa.", category: "ordena", deadline: "2024-08-20" },
 ];
-let nextTaskId = 5; // Simple ID increment
+let nextTaskId = 5; 
 
-// Load tasks from localStorage (if available)
 function loadTasks() {
     const storedTasks = localStorage.getItem('mimoTasks');
     const storedNextId = localStorage.getItem('mimoNextTaskId');
@@ -80,7 +74,6 @@ function loadTasks() {
     }
 }
 
-// Save tasks to localStorage
 function saveTasksToStorage() {
     localStorage.setItem('mimoTasks', JSON.stringify(tasks));
     localStorage.setItem('mimoNextTaskId', nextTaskId.toString());
@@ -99,15 +92,14 @@ function getCategoryDisplayName(categoryKey) {
 
 function renderTaskList() {
     if (!taskList) return;
-    taskList.innerHTML = ''; // Clear existing list
+    taskList.innerHTML = ''; 
 
     if (tasks.length === 0) {
         taskList.innerHTML = '<p class="no-tasks">¡Felicidades! No tienes tareas pendientes en tu reino.</p>';
         return;
     }
 
-    // Sort tasks maybe? By deadline or category? For now, just render as is.
-    tasks.sort((a, b) => a.id - b.id); // Simple sort by ID
+    tasks.sort((a, b) => a.id - b.id); 
 
     tasks.forEach(task => {
         const li = document.createElement('li');
@@ -133,9 +125,8 @@ function renderTaskList() {
             </div>
         `;
 
-        // Add event listeners for edit/delete buttons within the loop
         li.querySelector('.edit-task-btn').addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent triggering li click if any
+            e.stopPropagation(); 
             editTask(task.id);
         });
         li.querySelector('.delete-task-btn').addEventListener('click', (e) => {
@@ -147,12 +138,11 @@ function renderTaskList() {
     });
 }
 
-// --- Task CRUD Operations ---
 
 function saveTask(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault(); 
 
-    const id = taskIdInput.value ? parseInt(taskIdInput.value) : null; // Get ID if editing
+    const id = taskIdInput.value ? parseInt(taskIdInput.value) : null; 
 
     const taskData = {
         title: taskTitleInput.value.trim(),
@@ -167,22 +157,20 @@ function saveTask(event) {
     }
 
     if (id) {
-        // Update existing task
         const taskIndex = tasks.findIndex(task => task.id === id);
         if (taskIndex > -1) {
-            tasks[taskIndex] = { ...tasks[taskIndex], ...taskData }; // Merge data
+            tasks[taskIndex] = { ...tasks[taskIndex], ...taskData }; 
         }
     } else {
-        // Add new task
-        taskData.id = nextTaskId++; // Assign new ID
+        taskData.id = nextTaskId++; 
         tasks.push(taskData);
     }
 
-    saveTasksToStorage(); // Save to localStorage
-    renderTaskList(); // Re-render the list
-    showPage('task-list-page'); // Go back to the list page
-    taskForm.reset(); // Clear the form
-    taskIdInput.value = ''; // Clear hidden ID
+    saveTasksToStorage(); 
+    renderTaskList(); 
+    showPage('task-list-page');
+    taskForm.reset();
+    taskIdInput.value = ''; 
 }
 
 function editTask(id) {
@@ -203,24 +191,20 @@ function deleteTask(id) {
     const task = tasks.find(task => task.id === id);
     if (!task) return;
 
-    // Confirmation dialog
     if (confirm(`¿Estás seguro de que quieres eliminar la tarea "${task.title}"?`)) {
         tasks = tasks.filter(task => task.id !== id);
-        saveTasksToStorage(); // Save updated array to localStorage
-        renderTaskList(); // Re-render the list
+        saveTasksToStorage(); 
+        renderTaskList();
     }
 }
 
-// --- Initialization ---
 if (taskForm) {
     taskForm.addEventListener('submit', saveTask);
 }
 
-// Load tasks from storage and render the list on initial load
 loadTasks();
 renderTaskList();
 
-// Make sure the home page is shown initially if no other logic dictates otherwise
 if (!document.querySelector('.page.active')) {
      showPage('home-page');
 }

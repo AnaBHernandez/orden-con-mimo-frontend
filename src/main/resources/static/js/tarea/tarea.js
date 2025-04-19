@@ -1,25 +1,18 @@
-// src/main/resources/static/js/tarea/tarea.js
-
 import { fetchAPI, notifySuccess, notifyError } from '../comun/config.js';
 import { formatDate } from '../comun/app.js';
 
-// Variables globales
 let tareas = [];
 
-// Función para cargar todas las tareas
 async function cargarTareas() {
     try {
-        // Mostrar indicador de carga
         const contenedorTareas = document.getElementById('contenedor-tareas');
         if (contenedorTareas) {
             contenedorTareas.innerHTML = '<div class="loading">Cargando tareas...</div>';
         }
 
-        // Obtener tareas de la API
         tareas = await fetchAPI('tareas');
         console.log('Tareas cargadas:', tareas);
         
-        // Renderizar las tareas
         renderizarTareas(tareas);
     } catch (error) {
         console.error('Error al cargar tareas:', error);
@@ -27,7 +20,6 @@ async function cargarTareas() {
     }
 }
 
-// Función para renderizar las tareas en la interfaz
 function renderizarTareas(tareas) {
     const contenedorTareas = document.getElementById('contenedor-tareas');
     if (!contenedorTareas) {
@@ -35,16 +27,13 @@ function renderizarTareas(tareas) {
         return;
     }
     
-    // Limpiar el contenedor
     contenedorTareas.innerHTML = '';
     
-    // Si no hay tareas, mostrar mensaje
     if (!tareas || tareas.length === 0) {
         contenedorTareas.innerHTML = '<div class="sin-tareas">No hay tareas disponibles</div>';
         return;
     }
     
-    // Renderizar cada tarea
     tareas.forEach(tarea => {
         const categoriaClass = tarea.categoria ? tarea.categoria.toLowerCase() : '';
         
@@ -71,7 +60,6 @@ function renderizarTareas(tareas) {
         contenedorTareas.innerHTML += tareaHTML;
     });
     
-    // Agregar event listeners
     document.querySelectorAll('.btn-completar').forEach(btn => {
         btn.addEventListener('click', handleCompletarTarea);
     });
@@ -85,13 +73,12 @@ function renderizarTareas(tareas) {
     });
 }
 
-// Manejadores de eventos para los botones
 async function handleCompletarTarea(event) {
     const tareaId = event.target.dataset.id;
     try {
         const tareaActualizada = await fetchAPI(`tareas/${tareaId}/completar`, { method: 'PUT' });
         notifySuccess(`Tarea ${tareaActualizada.completada ? 'completada' : 'marcada como pendiente'}`);
-        cargarTareas(); // Recargar las tareas
+        cargarTareas();
     } catch (error) {
         notifyError('No se pudo actualizar el estado de la tarea');
     }
@@ -99,11 +86,7 @@ async function handleCompletarTarea(event) {
 
 async function handleEditarTarea(event) {
     const tareaId = event.target.dataset.id;
-    // Por ahora, solo mostramos un mensaje
     alert(`Editar tarea ${tareaId} - Funcionalidad en desarrollo`);
-    
-    // En el futuro, aquí iría la navegación a la página de edición
-    // window.location.href = `/tareas/editar/${tareaId}`;
 }
 
 async function handleEliminarTarea(event) {
@@ -115,13 +98,12 @@ async function handleEliminarTarea(event) {
     try {
         await fetchAPI(`tareas/${tareaId}`, { method: 'DELETE' });
         notifySuccess('Tarea eliminada correctamente');
-        cargarTareas(); // Recargar las tareas
+        cargarTareas();
     } catch (error) {
         notifyError('No se pudo eliminar la tarea');
     }
 }
 
-// Función para filtrar tareas por categoría
 async function filtrarTareasPorCategoria(categoria) {
     try {
         const tareasCategoria = await fetchAPI(`tareas/categorias/${categoria}`);
@@ -131,14 +113,11 @@ async function filtrarTareasPorCategoria(categoria) {
     }
 }
 
-// Inicializar la página de tareas
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Inicializando página de tareas');
     
-    // Cargar tareas al iniciar
     cargarTareas();
     
-    // Configurar eventos para el formulario de nueva tarea (si existe)
     const formNuevaTarea = document.getElementById('form-nueva-tarea');
     if (formNuevaTarea) {
         formNuevaTarea.addEventListener('submit', async (event) => {
@@ -159,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifySuccess('Tarea creada correctamente');
                 formNuevaTarea.reset();
                 
-                // Redirigir a la página de tareas
                 window.location.href = '/tareas';
             } catch (error) {
                 notifyError('No se pudo crear la tarea');
@@ -167,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Configurar filtros de categoría (si existen)
     const filtrosBotones = document.querySelectorAll('.filtro-categoria');
     filtrosBotones.forEach(boton => {
         boton.addEventListener('click', () => {
@@ -178,14 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 filtrarTareasPorCategoria(categoria);
             }
             
-            // Actualizar botón activo
             filtrosBotones.forEach(b => b.classList.remove('active'));
             boton.classList.add('active');
         });
     });
 });
 
-// Exportar funciones para poder usarlas desde otros módulos
 export {
     cargarTareas,
     filtrarTareasPorCategoria

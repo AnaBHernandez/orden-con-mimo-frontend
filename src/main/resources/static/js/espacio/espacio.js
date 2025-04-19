@@ -1,25 +1,18 @@
-// src/main/resources/static/js/espacio/espacio.js
-
 import { fetchAPI, notifySuccess, notifyError } from '../comun/config.js';
 import { formatDate } from '../comun/app.js';
 
-// Variables globales
 let espacios = [];
 
-// Función para cargar todos los espacios
 async function cargarEspacios() {
     try {
-        // Mostrar indicador de carga
         const contenedorEspacios = document.getElementById('contenedor-espacios');
         if (contenedorEspacios) {
             contenedorEspacios.innerHTML = '<div class="loading">Cargando espacios...</div>';
         }
 
-        // Obtener espacios de la API
         espacios = await fetchAPI('espacios');
         console.log('Espacios cargados:', espacios);
         
-        // Renderizar los espacios
         renderizarEspacios(espacios);
     } catch (error) {
         console.error('Error al cargar espacios:', error);
@@ -27,7 +20,6 @@ async function cargarEspacios() {
     }
 }
 
-// Función para renderizar los espacios en la interfaz
 function renderizarEspacios(espacios) {
     const contenedorEspacios = document.getElementById('contenedor-espacios');
     if (!contenedorEspacios) {
@@ -35,16 +27,13 @@ function renderizarEspacios(espacios) {
         return;
     }
     
-    // Limpiar el contenedor
     contenedorEspacios.innerHTML = '';
     
-    // Si no hay espacios, mostrar mensaje
     if (!espacios || espacios.length === 0) {
         contenedorEspacios.innerHTML = '<div class="sin-espacios">No hay espacios disponibles</div>';
         return;
     }
     
-    // Renderizar cada espacio
     espacios.forEach(espacio => {
         const espacioHTML = `
             <div class="espacio-card">
@@ -67,7 +56,6 @@ function renderizarEspacios(espacios) {
         contenedorEspacios.innerHTML += espacioHTML;
     });
     
-    // Agregar event listeners
     document.querySelectorAll('.btn-ver').forEach(btn => {
         btn.addEventListener('click', handleVerEspacio);
     });
@@ -81,7 +69,6 @@ function renderizarEspacios(espacios) {
     });
 }
 
-// Manejadores de eventos para los botones
 function handleVerEspacio(event) {
     const espacioId = event.target.dataset.id;
     window.location.href = `/espacios/${espacioId}`;
@@ -89,11 +76,7 @@ function handleVerEspacio(event) {
 
 function handleEditarEspacio(event) {
     const espacioId = event.target.dataset.id;
-    // Por ahora, solo mostramos un mensaje
     alert(`Editar espacio ${espacioId} - Funcionalidad en desarrollo`);
-    
-    // En el futuro, aquí iría la navegación a la página de edición
-    // window.location.href = `/espacios/editar/${espacioId}`;
 }
 
 async function handleEliminarEspacio(event) {
@@ -105,28 +88,24 @@ async function handleEliminarEspacio(event) {
     try {
         await fetchAPI(`espacios/${espacioId}`, { method: 'DELETE' });
         notifySuccess('Espacio eliminado correctamente');
-        cargarEspacios(); // Recargar los espacios
+        cargarEspacios();
     } catch (error) {
         notifyError('No se pudo eliminar el espacio');
     }
 }
 
-// Función para cargar tareas de un espacio específico
 async function cargarTareasDeEspacio(espacioId) {
     try {
         const tareas = await fetchAPI(`espacios/${espacioId}/tareas`);
         console.log(`Tareas del espacio ${espacioId}:`, tareas);
         
-        // Renderizar tareas (asumiendo que tenemos un contenedor para ellas)
         const contenedorTareas = document.getElementById('tareas-espacio');
         if (contenedorTareas) {
             if (tareas.length === 0) {
                 contenedorTareas.innerHTML = '<div class="sin-tareas">Este espacio no tiene tareas</div>';
             } else {
-                // Aquí renderizaríamos las tareas
                 contenedorTareas.innerHTML = '';
                 tareas.forEach(tarea => {
-                    // Similar al renderizado de tareas en tarea.js
                     const categoriaClass = tarea.categoria ? tarea.categoria.toLowerCase() : '';
                     const tareaHTML = `
                         <div class="tarea-card ${categoriaClass} ${tarea.completada ? 'completada' : ''}">
@@ -147,17 +126,14 @@ async function cargarTareasDeEspacio(espacioId) {
     }
 }
 
-// Inicializar la página de espacios
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Inicializando página de espacios');
     
-    // Detectar si estamos en la página de listado de espacios
     const contenedorEspacios = document.getElementById('contenedor-espacios');
     if (contenedorEspacios) {
         cargarEspacios();
     }
     
-    // Detectar si estamos en la página de detalle de un espacio
     const espacioDetalle = document.getElementById('espacio-detalle');
     if (espacioDetalle) {
         const espacioId = espacioDetalle.dataset.id;
@@ -166,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Configurar eventos para el formulario de nuevo espacio (si existe)
     const formNuevoEspacio = document.getElementById('form-nuevo-espacio');
     if (formNuevoEspacio) {
         formNuevoEspacio.addEventListener('submit', async (event) => {
@@ -186,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifySuccess('Espacio creado correctamente');
                 formNuevoEspacio.reset();
                 
-                // Redirigir a la página de espacios
                 window.location.href = '/espacios';
             } catch (error) {
                 notifyError('No se pudo crear el espacio');
@@ -195,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Exportar funciones para poder usarlas desde otros módulos
 export {
     cargarEspacios,
     cargarTareasDeEspacio
