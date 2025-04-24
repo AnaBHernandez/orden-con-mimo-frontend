@@ -1,235 +1,213 @@
-:root {
-  --mirate-color: #614385;
-  --imagina-color: #F1C40F;
-  --muevete-color: #E67E22;
-  --ordena-color: #27AE60;
-  
-  --primary-color: #98D8C8;
-  --accent-color: #F5E6A8;
-  --secondary-color: #89CFF0;
-  
-  --background-color: #f8f9fa;
-  --text-color: #333333;
-  --border-color: #dee2e6;
-  --hover-color: rgba(0, 0, 0, 0.05);
-  
-  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  
-  --border-radius: 8px;
-  --border-radius-sm: 4px;
-}
-
 body {
   font-family: 'Nunito', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: #f7f9fc;
 }
 
+
 .reino-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 0;
 }
 
 .reino-logo {
   font-family: 'Cinzel', serif;
   font-weight: 700;
-  font-size: 1.8rem;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: #3a3a3a;
+  font-size: 1.5rem;
 }
 
 .reino-nav-link {
-  color: white;
-  margin: 0 0.8rem;
-  padding: 0.5rem 0.8rem;
-  border-radius: var(--border-radius-sm);
-  transition: background-color 0.3s;
+  color: #5a5a5a;
+  font-weight: 600;
+  margin: 0 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .reino-nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  text-decoration: none;
+  color: #4e73df;
+}
+
+/* Botones */
+.btn-reino-primary {
+  background-color: #4e73df;
+  border-color: #4e73df;
   color: white;
 }
 
-.category-card {
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--hover-shadow);
-}
-
-.category-card h3 {
-  font-family: 'Cinzel', serif;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.mirate-card {
-  background-color: var(--mirate-color);
+.btn-reino-primary:hover {
+  background-color: #3a5fc8;
+  border-color: #3a5fc8;
   color: white;
-  border-left: 8px solid #4A3568;
 }
 
-.imagina-card {
-  background-color: var(--imagina-color);
-  color: #333;
-  border-left: 8px solid #D4AC0D;
+.btn-reino-secondary {
+  background-color: #f4f6f9;
+  border-color: #ddd;
+  color: #555;
 }
 
-.muevete-card {
-  background-color: var(--muevete-color);
-  color: white;
-  border-left: 8px solid #BA4A00;
-}
-
-.ordena-card {
-  background-color: var(--ordena-color);
-  color: white;
-  border-left: 8px solid #196F3D;
-}
-
-.tarea-item {
-  background-color: white;
-  border-radius: var(--border-radius-sm);
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-}
-
-.tarea-item:hover {
-  transform: translateX(5px);
-}
-
-.tarea-titulo {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.tarea-descripcion {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.tarea-completada {
-  text-decoration: line-through;
-  opacity: 0.7;
-}
-
-.btn-reino {
-  border-radius: var(--border-radius-sm);
-  padding: 0.5rem 1.2rem;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-
-.btn-primary-reino {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+.btn-reino-secondary:hover {
+  background-color: #e8eaed;
+  border-color: #ccc;
   color: #333;
 }
 
-.btn-primary-reino:hover {
-  background-color: #7fc3b1;
-  border-color: #7fc3b1;
+/* Tarjetas */
+.card {
+  border: none;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-accent-reino {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: #333;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.15);
 }
 
-.btn-accent-reino:hover {
-  background-color: #e8d88d;
-  border-color: #e8d88d;
+.card-header {
+  background-color: #f8f9fc;
+  border-bottom: 1px solid #e3e6f0;
+  padding: 1rem 1.25rem;
 }
 
-.form-reino {
-  background-color: white;
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
+.provincia-mirate {
+  color: #614385 !important; 
 }
 
-.form-reino .form-control {
-  border-radius: var(--border-radius-sm);
-  padding: 0.6rem 0.8rem;
-  border: 1px solid var(--border-color);
+.provincia-imagina {
+  color: #F1C40F !important;
 }
 
-.form-reino .form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(152, 216, 200, 0.25);
+.provincia-muevete {
+  color: #E67E22 !important; 
 }
 
-.form-reino label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+.provincia-ordena {
+  color: #27AE60 !important; 
 }
 
-.espacio-card {
-  background-color: white;
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.3s;
+.border-left-purple {
+  border-left: 5px solid #614385 !important;
 }
 
-.espacio-card:hover {
-  transform: translateY(-5px);
+.border-left-gold {
+  border-left: 5px solid #F1C40F !important;
 }
 
-.espacio-titulo {
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--secondary-color);
+.border-left-orange {
+  border-left: 5px solid #E67E22 !important;
 }
 
-.espacio-descripcion {
-  color: #666;
-  margin-bottom: 1rem;
+.border-left-green {
+  border-left: 5px solid #27AE60 !important;
 }
 
-.espacio-stats {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-  font-size: 0.9rem;
+.bg-mirate {
+  background-color: #614385 !important;
+  color: white !important;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.bg-imagina {
+  background-color: #F1C40F !important;
+  color: black !important;
 }
 
-.fade-in {
+.bg-muevete {
+  background-color: #E67E22 !important;
+  color: white !important;
+}
+
+.bg-ordena {
+  background-color: #27AE60 !important;
+  color: white !important;
+}
+
+.table-reino {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-reino thead th {
+  background-color: #f8f9fc;
+  border-bottom: 2px solid #e3e6f0;
+  color: #5a5a5a;
+  font-weight: 700;
+}
+
+.table-reino tbody tr:hover {
+  background-color: #f1f4f9;
+}
+
+.form-control {
+  border-radius: 0.3rem;
+  border: 1px solid #e2e6ea;
+  padding: 0.6rem 1rem;
+}
+
+.form-control:focus {
+  border-color: #bac8f3;
+  box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.animate-fade-in {
   animation: fadeIn 0.5s ease-in;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.status-badge {
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.status-pending {
+  background-color: #FFC107;
+  color: #212529;
+}
+
+.status-completed {
+  background-color: #28A745;
+  color: white;
+}
+
+.status-in-progress {
+  background-color: #17A2B8;
+  color: white;
+}
+
+
+.reino-welcome {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.reino-dashboard-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
 @media (max-width: 768px) {
-  .category-card {
-    margin-bottom: 1rem;
+  .reino-welcome {
+      padding: 1.5rem;
   }
   
-  .reino-logo {
-    font-size: 1.5rem;
+  .card-deck {
+      display: block;
   }
   
-  .form-reino {
-    padding: 1.5rem;
+  .card-deck .card {
+      margin-bottom: 1rem;
   }
 }

@@ -171,14 +171,13 @@
             color: #e74c3c;
         }
         
-        /* Category specific styles */
         .task-category.mirate, .task-category.MIRATE {
             background-color: var(--color-mirate);
         }
         
         .task-category.imagina, .task-category.IMAGINA {
             background-color: var(--color-imagina);
-            color: var(--color-text); /* Dark text for better contrast */
+            color: var(--color-text);
         }
         
         .task-category.muevete, .task-category.MUEVETE {
@@ -227,11 +226,75 @@
             border-radius: 4px;
             border: 1px solid #fadbd8;
         }
+        
+        .filter-bar {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-bar-mirate {
+            background-color: rgba(97, 67, 133, 0.1);
+            border: 1px solid rgba(97, 67, 133, 0.3);
+        }
+        
+        .filter-bar-imagina {
+            background-color: rgba(241, 196, 15, 0.1);
+            border: 1px solid rgba(241, 196, 15, 0.3);
+        }
+        
+        .filter-bar-muevete {
+            background-color: rgba(230, 126, 34, 0.1);
+            border: 1px solid rgba(230, 126, 34, 0.3);
+        }
+        
+        .filter-bar-ordena {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+        
+        .filter-badge {
+            font-weight: 600;
+        }
+        
+        .filter-badge-mirate {
+            color: var(--color-mirate);
+        }
+        
+        .filter-badge-imagina {
+            color: var(--color-imagina);
+        }
+        
+        .filter-badge-muevete {
+            color: var(--color-muevete);
+        }
+        
+        .filter-badge-ordena {
+            color: var(--color-ordena);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Mis Tareas del Reino</h1>
+        
+        <div th:if="${categoriaActual != null}" th:class="${'filter-bar filter-bar-' + #strings.toLowerCase(categoriaActual)}">
+            <div>
+                <span th:class="${'filter-badge filter-badge-' + #strings.toLowerCase(categoriaActual)}">
+                    Filtrando por: <span th:text="${categoriaActual}">Categoría</span>
+                </span>
+            </div>
+            <a href="/tareas" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                Quitar filtro
+            </a>
+        </div>
         
         <div class="actions-bar">
             <a href="/tareas/nueva" class="btn btn-primary">

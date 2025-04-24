@@ -29,14 +29,28 @@
                             <li class="nav-item">
                                 <a class="nav-link reino-nav-link" th:href="@{/}">Inicio</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link reino-nav-link" th:href="@{/tareas}">Tareas</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle reino-nav-link" href="#" id="tareasDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Tareas
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="tareasDropdown">
+                                    <li><a class="dropdown-item" th:href="@{/tareas}">Todas las Tareas</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item provincia-mirate" th:href="@{/tareas?categoria=MIRATE}">Mírate</a></li>
+                                    <li><a class="dropdown-item provincia-imagina" th:href="@{/tareas?categoria=IMAGINA}">Imagina</a></li>
+                                    <li><a class="dropdown-item provincia-muevete" th:href="@{/tareas?categoria=MUEVETE}">Muévete</a></li>
+                                    <li><a class="dropdown-item provincia-ordena" th:href="@{/tareas?categoria=ORDENA}">Ordena</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link reino-nav-link" th:href="@{/espacios}">Espacios</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link reino-nav-link" th:href="@{/sobre-mimo}">Método MIMO</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link reino-nav-link" th:href="@{/estadisticas}">Estadísticas</a>
                             </li>
                         </ul>
                     </div>

@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -119,7 +117,6 @@ public class TareaControllerTest {
         tarea.setCategoria("MIRATE");
         tarea.setFechaLimiteStr("2025-04-30");
 
-        Model model = mock(Model.class);
         RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
 
         Tarea tareaCreada = new Tarea();
@@ -128,7 +125,7 @@ public class TareaControllerTest {
 
         when(tareaApiService.crearTarea(any(Tarea.class))).thenReturn(tareaCreada);
 
-        String resultado = tareaController.guardarTarea(tarea, model, redirectAttributes);
+        String resultado = tareaController.guardarTareaNueva(tarea, redirectAttributes);
 
         verify(tareaApiService).crearTarea(any(Tarea.class));
 

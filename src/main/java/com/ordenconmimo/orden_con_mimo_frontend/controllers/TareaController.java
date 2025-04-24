@@ -1,5 +1,9 @@
 package com.ordenconmimo.orden_con_mimo_frontend.controllers;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,14 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
 import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
 
 @Controller
 @RequestMapping("/tareas")
@@ -27,14 +28,23 @@ public class TareaController {
     }
 
     @GetMapping
-    public String listarTareas(Model model) {
+    public String listarTareas(@RequestParam(required = false) String categoria, Model model) {
         try {
             List<Tarea> tareas = tareaApiService.obtenerTareas();
+
+            if (categoria != null && !categoria.isEmpty()) {
+                tareas = tareas.stream()
+                        .filter(t -> categoria.equals(t.getCategoria()))
+                        .collect(Collectors.toList());
+                model.addAttribute("categoriaActual", categoria);
+            }
+
             model.addAttribute("tareas", tareas);
+            model.addAttribute("title", "Mis Tareas del Reino");
             return "tarea/list";
         } catch (Exception e) {
+            model.addAttribute("errorMessage", "Error al cargar las tareas: " + e.getMessage());
             model.addAttribute("tareas", Collections.emptyList());
-            model.addAttribute("errorMessage", "Error al conectar con el backend: " + e.getMessage());
             return "tarea/list";
         }
     }
@@ -55,6 +65,24 @@ public class TareaController {
         model.addAttribute("tarea", tarea);
 
         return "tarea/editar";
+    }
+
+    @PostMapping
+    public String guardarTarea(@ModelAttribute Tarea tarea, RedirectAttributes redirectAttributes) {
+        System.out.println("Método guardarTarea llamado");
+        try {
+            Tarea tareaCreada = tareaApiService.crearTarea(tarea);
+            
+            if (tareaCreada != null) {
+                redirectAttributes.addFlashAttribute("successMessage", "Tarea guardada exitosamente");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Error al guardar la tarea");
+            }
+            return "redirect:/tareas";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al guardar la tarea: " + e.getMessage());
+            return "redirect:/tareas/nueva";
+        }
     }
 
     @GetMapping("/{id}/eliminar")
@@ -79,32 +107,19 @@ public class TareaController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTarea(@ModelAttribute Tarea tarea, Model model, RedirectAttributes redirectAttributes) {
-        System.out.println("Recibiendo tarea para guardar: " + tarea);
-        System.out.println("Fecha límite recibida: " + tarea.getFechaLimiteStr());
-
-        if (tarea.getFechaLimiteStr() != null && !tarea.getFechaLimiteStr().isEmpty()) {
-            try {
-                LocalDate fecha = LocalDate.parse(tarea.getFechaLimiteStr());
-                tarea.setFechaLimite(fecha);
-                System.out.println("Fecha límite convertida: " + fecha);
-            } catch (Exception e) {
-                System.err.println("Error al convertir la fecha: " + e.getMessage());
-                model.addAttribute("error", "Formato de fecha inválido");
-                return "tareas/crear";
+    public String guardarTareaNueva(@ModelAttribute Tarea tarea, RedirectAttributes redirectAttributes) {
+        try {
+            Tarea tareaCreada = tareaApiService.crearTarea(tarea);
+            
+            if (tareaCreada != null) {
+                redirectAttributes.addFlashAttribute("successMessage", "Tarea creada exitosamente");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "Error al crear la tarea");
             }
-        }
-
-        Tarea nuevaTarea = tareaApiService.crearTarea(tarea);
-
-        if (nuevaTarea != null) {
-
-            redirectAttributes.addAttribute("mensaje", "Tarea creada correctamente");
             return "redirect:/tareas";
-        } else {
-
-            model.addAttribute("error", "Error al crear la tarea");
-            return "tareas/crear";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al crear la tarea: " + e.getMessage());
+            return "redirect:/tareas/nueva";
         }
     }
 

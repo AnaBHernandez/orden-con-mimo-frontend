@@ -110,15 +110,14 @@
         <div class="form-container">
             <!-- Mostrar errores si hay -->
             <div class="error" th:if="${error}" th:text="${error}"></div>
-            
-            <form th:action="@{/tareas/guardar}" th:object="${tarea}" method="post">
+            <form th:action="@{/tareas/guardar}" method="post" th:object="${tarea}">
                 <input type="hidden" th:field="*{id}" />
-                
+            
                 <div class="form-group">
                     <label for="titulo">Título</label>
                     <input type="text" id="titulo" th:field="*{titulo}" required />
                 </div>
-                
+            
                 <div class="form-group">
                     <label for="categoria">Categoría</label>
                     <select id="categoria" th:field="*{categoria}" required>
@@ -128,22 +127,23 @@
                         <option value="ORDENA">Ordena - Mantén tu espacio organizado</option>
                     </select>
                 </div>
-                
+            
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" th:field="*{descripcion}" required></textarea>
                 </div>
-                
-                <div>
+            
+                <div class="form-group">
                     <label for="fechaLimiteStr">Fecha límite</label>
-                    <input type="date" id="fechaLimiteStr" name="fechaLimiteStr" th:field="*{fechaLimiteStr}">
+                    <input type="date" id="fechaLimiteStr" th:field="*{fechaLimiteStr}">
                 </div>
-                
+            
                 <div class="actions">
                     <a href="/tareas" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </body>
