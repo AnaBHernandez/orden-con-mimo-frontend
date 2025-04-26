@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content}, styles=~{::styles}, scripts=~{::scripts}, title='Mis Espacios')}">
+<head>
+    <styles>
+        <style>
+            .spaces-container {
+                margin-top: 20px;
+            }
+            
+            .space-card {
+                background: white;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                padding: 20px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                position: relative;
+            }
+            
+            .space-actions {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+            }
+            
+            .space-type {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                background-color: var(--color-primary);
+                margin-bottom: 10px;
+            }
+        </style>
+    </styles>
+</head>
+<body>
+    <content>
+        <h1>Mis Espacios</h1>
+        
+        <div class="action-bar">
+            <a href="/espacios/nuevo" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Nuevo Espacio
+            </a>
+        </div>
+        
+        <!-- Mensaje de error/éxito -->
+        <div th:if="${mensaje}" class="alert alert-info" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        
+        <!-- Lista de espacios -->
+        <div class="spaces-container">
+            <div th:if="${espacios != null and !espacios.empty}">
+                <div th:each="espacio : ${espacios}" class="space-card">
+                    <div class="space-actions">
+                        <a th:href="@{/espacios/{id}/editar(id=${espacio.id})}" class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                            </svg>
+                        </a>
+                        <a th:href="@{/espacios/{id}/eliminar(id=${espacio.id})}" class="btn-icon delete-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="space-type" th:text="${espacio.tipo}"></div>
+                    <h3 th:text="${espacio.nombre}"></h3>
+                    <p th:text="${espacio.descripcion}"></p>
+                    <a th:href="@{/espacios/{id}(id=${espacio.id})}" class="btn">Ver detalles</a>
+                </div>
+            </div>
+            <div th:if="${espacios == null or espacios.empty}" class="empty-state">
+                <p>No tienes espacios creados. ¡Crea un nuevo espacio para comenzar a organizarte!</p>
+            </div>
+        </div>
+    </content>
+    
+    <scripts>
+        <script>
+            // Script para confirmar eliminación de espacios
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteButtons = document.querySelectorAll('.delete-btn');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        if (!confirm('¿Estás seguro de que deseas eliminar este espacio?')) {
+                            e.preventDefault();
+                        }
+                    });
+                });
+            });
+        </script>
+    </scripts>
+</body>
+</html>

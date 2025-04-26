@@ -182,10 +182,53 @@
             background-color: #e0e0e0;
             margin: 30px 0;
         }
+        
+        /* Estilo para la navegación */
+        .main-nav {
+            background-color: var(--color-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item a:hover {
+            background-color: #89CFF0;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Barra de navegación -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/">Inicio</a></li>
+                <li class="nav-item"><a href="/tareas">Tareas</a></li>
+                <li class="nav-item"><a href="/espacios">Espacios</a></li>
+                <li class="nav-item"><a href="/estadisticas">Estadísticas</a></li>
+                <li class="nav-item"><a href="/sobre-mimo">Método MIMO</a></li>
+            </ul>
+        </nav>
+        
         <header class="header">
             <h1>El Reino de MIMO</h1>
             <p class="subtitle">Tu Sistema Mágico de Organización Personal</p>

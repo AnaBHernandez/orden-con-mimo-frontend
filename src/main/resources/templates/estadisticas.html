@@ -1,174 +1,263 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      th:replace="~{comun/layout :: layout (~{::title}, ~{::section})}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}">Estadísticas MIMO</title>
+    <meta charset="UTF-8">
+    <title>Estadísticas MIMO</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .stats-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+            font-weight: 800;
+        }
+        
+        .stats-subtitle {
+            color: #666;
+            text-align: center;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 180px;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-card {
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            height: 100%;
+        }
+        
+        .stats-card.mirate {
+            background: linear-gradient(135deg, #614385 0%, #516395 100%);
+            color: white;
+        }
+        
+        .stats-card.imagina {
+            background: linear-gradient(135deg, #F1C40F 0%, #F39C12 100%);
+            color: white;
+        }
+        
+        .stats-card.muevete {
+            background: linear-gradient(135deg, #E67E22 0%, #D35400 100%);
+            color: white;
+        }
+        
+        .stats-card.ordena {
+            background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+            color: white;
+        }
+        
+        .stats-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-number {
+            font-size: 3rem;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .split-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .split-item {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
-    <section class="container my-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">Estadísticas de Tareas MIMO</h2>
+    <div>
+        <div class="container py-3">
+            <div class="stats-container">
+                <h1 class="stats-title">Estadísticas MIMO</h1>
+                <p class="stats-subtitle">Análisis de tus tareas por categoría</p>
+                
+                <div class="split-container">
+                    <div class="split-item">
+                        <div class="chart-container">
+                            <canvas id="donutChart"></canvas>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <!-- Mensaje de error si hay algún problema -->
-                        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">
-                            Error al cargar estadísticas
+                    <div class="split-item">
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
                         </div>
-                        
-                        <!-- Estadísticas generales -->
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Distribución de Tareas por Categoría</h5>
-                                        <div class="chart-container" style="position: relative; height:300px;">
-                                            <canvas id="donutChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Tareas por Categoría</h5>
-                                        <div class="chart-container" style="position: relative; height:300px;">
-                                            <canvas id="barChart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="stats-card mirate">
+                            <i class="fas fa-eye stats-icon"></i>
+                            <div class="stats-number" th:text="${estadisticas.MIRATE}">0</div>
+                            <div class="stats-label">Tareas de<br/>auto-observación</div>
                         </div>
-                        
-                        <!-- Tarjetas de resumen -->
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="card text-white bg-primary mb-3">
-                                    <div class="card-header provincia-mirate">Mírate</div>
-                                    <div class="card-body">
-                                        <h5 class="card-title" th:text="${estadisticas.MIRATE}">0</h5>
-                                        <p class="card-text">Tareas de auto-observación</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-warning mb-3">
-                                    <div class="card-header provincia-imagina">Imagina</div>
-                                    <div class="card-body">
-                                        <h5 class="card-title" th:text="${estadisticas.IMAGINA}">0</h5>
-                                        <p class="card-text">Tareas de creatividad</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-danger mb-3">
-                                    <div class="card-header provincia-muevete">Muévete</div>
-                                    <div class="card-body">
-                                        <h5 class="card-title" th:text="${estadisticas.MUEVETE}">0</h5>
-                                        <p class="card-text">Tareas de acción</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card text-white bg-success mb-3">
-                                    <div class="card-header provincia-ordena">Ordena</div>
-                                    <div class="card-body">
-                                        <h5 class="card-title" th:text="${estadisticas.ORDENA}">0</h5>
-                                        <p class="card-text">Tareas de organización</p>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card imagina">
+                            <i class="fas fa-lightbulb stats-icon"></i>
+                            <div class="stats-number" th:text="${estadisticas.IMAGINA}">0</div>
+                            <div class="stats-label">Tareas de<br/>creatividad</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card muevete">
+                            <i class="fas fa-running stats-icon"></i>
+                            <div class="stats-number" th:text="${estadisticas.MUEVETE}">0</div>
+                            <div class="stats-label">Tareas de<br/>acción</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card ordena">
+                            <i class="fas fa-tasks stats-icon"></i>
+                            <div class="stats-number" th:text="${estadisticas.ORDENA}">0</div>
+                            <div class="stats-label">Tareas de<br/>organización</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    
+    <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener datos del modelo Thymeleaf
+        var estadisticas = /*[[${estadisticas}]]*/ {
+            'MIRATE': 0,
+            'IMAGINA': 0, 
+            'MUEVETE': 0,
+            'ORDENA': 0
+        };
         
-        <!-- Script para inicializar los gráficos -->
-        <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            // Obtener datos del modelo
-            var estadisticas = /*[[${estadisticas}]]*/ {
-                'MIRATE': 0,
-                'IMAGINA': 0,
-                'MUEVETE': 0,
-                'ORDENA': 0
-            };
-            
-            // Configuración del gráfico de donut
-            var donutCtx = document.getElementById('donutChart').getContext('2d');
-            var donutChart = new Chart(donutCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Mírate', 'Imagina', 'Muévete', 'Ordena'],
-                    datasets: [{
-                        data: [
-                            estadisticas['MIRATE'],
-                            estadisticas['IMAGINA'],
-                            estadisticas['MUEVETE'],
-                            estadisticas['ORDENA']
-                        ],
-                        backgroundColor: [
-                            '#614385', // Púrpura para Mírate
-                            '#F1C40F', // Dorado para Imagina
-                            '#E67E22', // Naranja para Muévete
-                            '#27AE60'  // Verde para Ordena
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
+        // Configuración común para ambos gráficos
+        var categoryColors = [
+            '#614385', // Púrpura para Mírate
+            '#F1C40F', // Dorado para Imagina
+            '#E67E22', // Naranja para Muévete
+            '#27AE60'  // Verde para Ordena
+        ];
+        
+        var categoryData = [
+            estadisticas['MIRATE'],
+            estadisticas['IMAGINA'],
+            estadisticas['MUEVETE'],
+            estadisticas['ORDENA']
+        ];
+        
+        // Configuración del gráfico de donut
+        var donutCtx = document.getElementById('donutChart').getContext('2d');
+        var donutChart = new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Mírate', 'Imagina', 'Muévete', 'Ordena'],
+                datasets: [{
+                    data: categoryData,
+                    backgroundColor: categoryColors,
+                    borderWidth: 0,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 10,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribución de Tareas',
+                        font: {
+                            size: 14
                         }
                     }
                 }
-            });
-            
-            // Configuración del gráfico de barras
-            var barCtx = document.getElementById('barChart').getContext('2d');
-            var barChart = new Chart(barCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Mírate', 'Imagina', 'Muévete', 'Ordena'],
-                    datasets: [{
-                        label: 'Número de Tareas',
-                        data: [
-                            estadisticas['MIRATE'],
-                            estadisticas['IMAGINA'],
-                            estadisticas['MUEVETE'],
-                            estadisticas['ORDENA']
-                        ],
-                        backgroundColor: [
-                            '#614385', // Púrpura para Mírate
-                            '#F1C40F', // Dorado para Imagina
-                            '#E67E22', // Naranja para Muévete
-                            '#27AE60'  // Verde para Ordena
-                        ],
-                        borderWidth: 1
-                    }]
+            }
+        });
+        
+        // Configuración del gráfico de barras
+        var barCtx = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mírate', 'Imagina', 'Muévete', 'Ordena'],
+                datasets: [{
+                    label: 'Tareas',
+                    data: categoryData,
+                    backgroundColor: categoryColors,
+                    borderWidth: 0,
+                    borderRadius: 5,
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Cantidad de Tareas',
+                        font: {
+                            size: 14
+                        }
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0,
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 11
                             }
                         }
                     }
                 }
-            });
+            }
         });
-        </script>
-    </section>
+    });
+    </script>
 </body>
 </html>

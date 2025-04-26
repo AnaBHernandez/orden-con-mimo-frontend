@@ -31,6 +31,12 @@ public class WebsimController {
         }
     }
 
+    @GetMapping("/test-api")
+    @ResponseBody
+    public String testApiEndpoint() {
+        return testApiConnection();
+    }
+
     @PostMapping("/api/tareas")
     @ResponseBody
     public ResponseEntity<?> crearTarea(@RequestBody Tarea tarea) {

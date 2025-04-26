@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Espacio - El Reino de MIMO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            --mimo-primary: #98D8C8;
+            --mimo-secondary: #89CFF0;
+            --mimo-accent: #F5E6A8;
+            --mimo-text: #2A4747;
+            --mirate-color: #614385;
+            --imagina-color: #F1C40F;
+            --muevete-color: #E67E22;
+            --ordena-color: #27AE60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .espacio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .espacio-info {
+            margin-bottom: 20px;
+        }
+        
+        .espacio-info p {
+            margin: 5px 0;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            margin-right: 8px;
+        }
+        
+        .btn i {
+            margin-right: 5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--mimo-primary), var(--mimo-secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #c82333;
+        }
+        
+        .tareas-section h2 {
+            margin-bottom: 15px;
+        }
+        
+        .tarea-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tarea-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .tarea-item:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .tarea-item.mirate { border-left: 4px solid var(--mirate-color); }
+        .tarea-item.imagina { border-left: 4px solid var(--imagina-color); }
+        .tarea-item.muevete { border-left: 4px solid var(--muevete-color); }
+        .tarea-item.ordena { border-left: 4px solid var(--ordena-color); }
+        
+        .tarea-item.completada {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+        
+        .no-tareas {
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${espacio.nombre}">Nombre del Espacio</h1>
+        
+        <div class="card">
+            <div class="espacio-header">
+                <div>
+                    <h2>Detalles del Espacio</h2>
+                </div>
+                <div>
+                    <a th:href="@{'/espacios/' + ${espacio.id} + '/editar'}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a th:href="@{'/espacios/' + ${espacio.id} + '/eliminar'}" 
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Estás seguro que deseas eliminar este espacio?')">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </div>
+            
+            <div class="espacio-info">
+                <p><strong>Descripción:</strong> <span th:text="${espacio.descripcion}">Descripción...</span></p>
+                <p><strong>Tipo:</strong> <span th:text="${espacio.tipo}">Tipo de espacio</span></p>
+            </div>
+        </div>
+        
+        <div class="card tareas-section">
+            <h2>Tareas en este Espacio</h2>
+            
+            <div th:if="${tareas != null and !tareas.empty}">
+                <ul class="tarea-list">
+                    <li th:each="tarea : ${tareas}" 
+                        th:class="'tarea-item ' + ${tarea.categoria.toString().toLowerCase()} + (${tarea.completada} ? ' completada' : '')">
+                        <div>
+                            <strong th:text="${tarea.titulo}">Título de la tarea</strong>
+                            <p th:if="${tarea.descripcion}" th:text="${tarea.descripcion}">Descripción...</p>
+                        </div>
+                        <div>
+                            <a th:href="@{'/tareas/' + ${tarea.id} + '/editar'}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div th:if="${tareas == null or tareas.empty}" class="no-tareas">
+                <p>No hay tareas asignadas a este espacio.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/espacios" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver a Espacios
+            </a>
+            <a href="/tareas/nueva" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Tarea
+            </a>
+        </div>
+    </div>
+</body>
+</html>

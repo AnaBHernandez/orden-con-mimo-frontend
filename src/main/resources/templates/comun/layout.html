@@ -3,99 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} ?: 'Reino MIMO'">Reino MIMO</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/mimo-theme.css}" rel="stylesheet">
-    
-    <th:block th:replace="${customCss} ?: _"></th:block>
+    <title th:text="${title ?: 'Reino MIMO'}">Reino MIMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-mirate: #614385; /* Morado */
+            --color-imagina: #F1C40F; /* Dorado */
+            --color-muevete: #E67E22; /* Naranja */
+            --color-ordena: #27AE60; /* Verde */
+            --color-primary: #e0f7fa;
+            --color-primary-dark: #89CFF0;
+        }
+        
+        /* Estilos existentes... */
+        
+        /* Estilos para la navegación */
+        .main-nav {
+            background-color: var(--color-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item a:hover {
+            background-color: var(--color-primary-dark);
+            color: white;
+        }
+        
+        .nav-item.active a {
+            background-color: var(--color-primary-dark);
+            color: white;
+        }
+        
+        /* Media queries para responsividad */
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+    </style>
+    <!-- Bloque para estilos adicionales en páginas específicas -->
+    <th:block th:replace="${styles}"></th:block>
 </head>
 <body>
-    <header class="reino-header">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <a class="navbar-brand reino-logo" th:href="@{/}">
-                        <i class="fas fa-crown me-2"></i>Reino MIMO
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link reino-nav-link" th:href="@{/}">Inicio</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle reino-nav-link" href="#" id="tareasDropdown" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Tareas
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="tareasDropdown">
-                                    <li><a class="dropdown-item" th:href="@{/tareas}">Todas las Tareas</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item provincia-mirate" th:href="@{/tareas?categoria=MIRATE}">Mírate</a></li>
-                                    <li><a class="dropdown-item provincia-imagina" th:href="@{/tareas?categoria=IMAGINA}">Imagina</a></li>
-                                    <li><a class="dropdown-item provincia-muevete" th:href="@{/tareas?categoria=MUEVETE}">Muévete</a></li>
-                                    <li><a class="dropdown-item provincia-ordena" th:href="@{/tareas?categoria=ORDENA}">Ordena</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link reino-nav-link" th:href="@{/espacios}">Espacios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link reino-nav-link" th:href="@{/sobre-mimo}">Método MIMO</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link reino-nav-link" th:href="@{/estadisticas}">Estadísticas</a>
-                            </li>
-                        </ul>
-                        <!-- INICIO: Código para mostrar usuario logueado -->
-                        <div th:if="${session.usuarioLogueado}" class="ms-3 d-flex align-items-center">
-                            <span class="navbar-text me-3">
-                                <i class="fas fa-user-circle me-1"></i> <span th:text="${session.usuarioLogueado}">Usuario</span>
-                            </span>
-                            <a th:href="@{/logout}" class="btn btn-outline-light btn-sm">
-                                <i class="fas fa-sign-out-alt me-1"></i>Salir
-                            </a>
-                        </div>
-                        <!-- FIN: Código para mostrar usuario logueado -->
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container py-4">
-        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${successMessage}">
-            <i class="fas fa-check-circle me-2"></i><span th:text="${successMessage}">Operación exitosa</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
+    <div class="container">
+        <!-- Navegación principal -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
+                    <a href="/">Inicio</a>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/tareas') ? 'active' : ''}">
+                    <a href="/tareas">Tareas</a>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/espacios') ? 'active' : ''}">
+                    <a href="/espacios">Espacios</a>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/estadisticas') ? 'active' : ''}">
+                    <a href="/estadisticas">Estadísticas</a>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/sobre-mimo') ? 'active' : ''}">
+                    <a href="/sobre-mimo">Método MIMO</a>
+                </li>
+            </ul>
+        </nav>
         
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${errorMessage}">
-            <i class="fas fa-exclamation-circle me-2"></i><span th:text="${errorMessage}">Error</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
+        <!-- Contenido principal -->
+        <main>
+            <th:block th:replace="${content}"></th:block>
+        </main>
         
-        <th:block th:replace="${content}">
-            <p>Contenido por defecto - Será reemplazado</p>
-        </th:block>
-    </main>
-
-    <footer class="bg-light py-4 mt-5">
-        <div class="container text-center text-muted">
-            <p>&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> - Reino MIMO</p>
-            <p>Organiza tu vida con el método MIMO</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/comun/config.js}"></script>
-    <script th:src="@{/js/comun/app.js}"></script>
+        <!-- Pie de página -->
+        <footer class="footer">
+            <hr>
+            <p>© 2025 Reino MIMO - Sistema de Organización Personal</p>
+        </footer>
+    </div>
     
-    <th:block th:replace="${customScripts} ?: _"></th:block>
+    <!-- Bloque para scripts adicionales en páginas específicas -->
+    <th:block th:replace="${scripts}"></th:block>
 </body>
 </html>

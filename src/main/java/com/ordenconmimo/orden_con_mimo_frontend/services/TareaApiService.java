@@ -1,9 +1,5 @@
 package com.ordenconmimo.orden_con_mimo_frontend.services;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.MediaType;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -178,10 +177,8 @@ public class TareaApiService {
             System.out.println("=== CREANDO TAREA ===");
             System.out.println("Título original: " + tarea.getTitulo());
             
-            // Usar directamente apiUrl, que ya contiene "/tareas"
             System.out.println("URL completa para crear tarea: " + apiUrl);
     
-            // Preparar los datos para enviar al backend
             Map<String, Object> requestMap = new HashMap<>();
             if (tarea.getTitulo() != null) {
                 requestMap.put("nombre", tarea.getTitulo());
@@ -208,18 +205,15 @@ public class TareaApiService {
     
             System.out.println("Enviando al backend: " + requestMap);
     
-            // Preparar headers y request entity
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestMap, headers);
     
-            // Realizar la petición POST con la URL correcta (sin añadir "/tareas" nuevamente)
             ResponseEntity<Object> response = restTemplate.postForEntity(apiUrl, requestEntity, Object.class);
     
             System.out.println("Respuesta del backend: " + response.getStatusCode());
             System.out.println("Cuerpo de respuesta: " + response.getBody());
     
-            // Procesar la respuesta
             if (response.getBody() instanceof Map) {
                 Map<String, Object> responseMap = (Map<String, Object>) response.getBody();
                 Tarea tareaCreada = new Tarea();

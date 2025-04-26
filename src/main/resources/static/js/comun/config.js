@@ -114,13 +114,13 @@ async function fetchAPI(endpoint, options = {}) {
                     return { ...tarea };
                 } else if (endpoint === 'espacios') {
                     return [...MOCK_DATA.espacios];
-                } else if (endpoint.startsWith('espacios/') && endpoint.includes('/tareas')) {
+                } else if (endpoint.startsWith('espacio/') && endpoint.includes('/tareas')) {
                     const id = parseInt(endpoint.split('/')[1]);
                     const espacio = MOCK_DATA.espacios.find(e => e.id === id);
                     if (!espacio) throw { status: 404, message: 'Espacio no encontrado' };
                     
                     return MOCK_DATA.tareas.filter(t => espacio.tareas.includes(t.id));
-                } else if (endpoint.startsWith('espacios/')) {
+                } else if (endpoint.startsWith('espacio/')) {
                     const id = parseInt(endpoint.split('/')[1]);
                     const espacio = MOCK_DATA.espacios.find(e => e.id === id);
                     if (!espacio) throw { status: 404, message: 'Espacio no encontrado' };
@@ -158,7 +158,7 @@ async function fetchAPI(endpoint, options = {}) {
                     
                     MOCK_DATA.tareas[index] = { ...MOCK_DATA.tareas[index], ...body };
                     return { ...MOCK_DATA.tareas[index] };
-                } else if (endpoint.startsWith('espacios/')) {
+                } else if (endpoint.startsWith('espacio/')) {
                     const id = parseInt(endpoint.split('/')[1]);
                     const index = MOCK_DATA.espacios.findIndex(e => e.id === id);
                     if (index === -1) throw { status: 404, message: 'Espacio no encontrado' };
@@ -175,7 +175,7 @@ async function fetchAPI(endpoint, options = {}) {
                     const deletedTarea = MOCK_DATA.tareas[index];
                     MOCK_DATA.tareas.splice(index, 1);
                     return deletedTarea;
-                } else if (endpoint.startsWith('espacios/')) {
+                } else if (endpoint.startsWith('espacio/')) {
                     const id = parseInt(endpoint.split('/')[1]);
                     const index = MOCK_DATA.espacios.findIndex(e => e.id === id);
                     if (index === -1) throw { status: 404, message: 'Espacio no encontrado' };

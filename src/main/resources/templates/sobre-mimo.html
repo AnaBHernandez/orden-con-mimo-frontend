@@ -1,101 +1,331 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      th:replace="~{comun/layout :: layout (~{::title}, ~{::section})}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}">Sobre el Método MIMO</title>
+    <meta charset="UTF-8">
+    <title>Sobre el Método MIMO</title>
+    <style>
+        .mimo-container {
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .mimo-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #614385, #F1C40F, #E67E22, #27AE60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .mimo-subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mimo-letter {
+            display: inline-block;
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin: 0 10px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .mimo-letter:hover {
+            transform: translateY(-5px) rotate(5deg);
+        }
+        
+        .letter-m1 {
+            color: #614385;
+        }
+        
+        .letter-i {
+            color: #F1C40F;
+        }
+        
+        .letter-m2 {
+            color: #E67E22;
+        }
+        
+        .letter-o {
+            color: #27AE60;
+        }
+        
+        .mimo-definition {
+            text-align: center;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+        
+        .pillar-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .pillar-card {
+            flex: 1;
+            min-width: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .pillar-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .pillar-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .mirate-bg {
+            background-color: #614385;
+            color: white;
+        }
+        
+        .imagina-bg {
+            background-color: #F1C40F;
+            color: black;
+        }
+        
+        .muevete-bg {
+            background-color: #E67E22;
+            color: white;
+        }
+        
+        .ordena-bg {
+            background-color: #27AE60;
+            color: white;
+        }
+        
+        .pillar-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pillar-body {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .color-word {
+            font-weight: bold;
+        }
+        
+        .word-mirate {
+            color: #614385;
+        }
+        
+        .word-imagina {
+            color: #F1C40F;
+        }
+        
+        .word-muevete {
+            color: #E67E22;
+        }
+        
+        .word-ordena {
+            color: #27AE60;
+        }
+        
+        .applications {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .applications-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .app-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .app-item:hover {
+            background: #f8f9fa;
+            transform: scale(1.05);
+        }
+        
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .cta-button {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(to right, #614385, #F1C40F, #E67E22, #27AE60);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+    </style>
 </head>
 <body>
-    <section class="container my-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="mb-0">El Método MIMO</h2>
+    <div>
+        <div class="container py-3">
+            <div class="mimo-container">
+                <h1 class="mimo-title">El Método MIMO</h1>
+                
+                <div class="text-center mb-4">
+                    <span class="mimo-letter letter-m1">M</span>
+                    <span class="mimo-letter letter-i">I</span>
+                    <span class="mimo-letter letter-m2">M</span>
+                    <span class="mimo-letter letter-o">O</span>
+                </div>
+                
+                <p class="mimo-definition">
+                    Un enfoque integral que significa <span class="color-word word-mirate">Mírate</span>, 
+                    <span class="color-word word-imagina">Imagina</span>, 
+                    <span class="color-word word-muevete">Muévete</span>, 
+                    <span class="color-word word-ordena">Ordena</span> 
+                    para la organización personal y el desarrollo.
+                </p>
+                
+                <div class="pillar-container">
+                    <div class="pillar-card">
+                        <div class="pillar-header mirate-bg">
+                            <span class="pillar-icon"><i class="fas fa-eye"></i></span>
+                            <span>MÍRATE</span>
+                        </div>
+                        <div class="pillar-body">
+                            Auto-observación: Entiende tus necesidades, hábitos y patrones.
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <h3>¿Qué es el método MIMO?</h3>
-                            <p class="lead">
-                                MIMO es un acrónimo que significa <strong>Mírate, Imagina, Muévete, Ordena</strong>, un enfoque integral para la organización personal y el desarrollo creado por [Nombre de la Creadora].
-                            </p>
-                            <p>
-                                Este método te ayuda a gestionar tanto el espacio físico como mental, permitiéndote avanzar de forma ordenada y consciente en tus proyectos y objetivos personales.
-                            </p>
+                    
+                    <div class="pillar-card">
+                        <div class="pillar-header imagina-bg">
+                            <span class="pillar-icon"><i class="fas fa-lightbulb"></i></span>
+                            <span>IMAGINA</span>
                         </div>
-                        
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="card h-100 bg-light">
-                                    <div class="card-body">
-                                        <h4 class="card-title text-primary">Sobre la Creadora</h4>
-                                        <p class="card-text">
-                                            [Nombre de la Creadora] desarrolló el método MIMO tras años de investigación en organización personal y productividad. Su enfoque único combina técnicas de mindfulness, organización espacial y gestión del tiempo.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card h-100 bg-light">
-                                    <div class="card-body">
-                                        <h4 class="card-title text-primary">Origen del Método</h4>
-                                        <p class="card-text">
-                                            El método nació de la necesidad de integrar el bienestar personal con la productividad, reconociendo que ambos aspectos están intrínsecamente conectados y se benefician mutuamente.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="pillar-body">
+                            Visualiza el resultado deseado y establece metas claras.
                         </div>
-                        
-                        <div class="mb-4">
-                            <h3>Los Cuatro Pilares del Método MIMO</h3>
-                            
-                            <div class="card mb-3 border-left-purple">
-                                <div class="card-body">
-                                    <h4 class="provincia-mirate">Mírate</h4>
-                                    <p>
-                                        El primer paso es la auto-observación. Antes de organizar tu entorno, necesitas entender tus necesidades, hábitos y patrones. Esta fase te invita a reflexionar sobre tu estado actual, tanto físico como mental.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-left-gold">
-                                <div class="card-body">
-                                    <h4 class="provincia-imagina">Imagina</h4>
-                                    <p>
-                                        Visualiza el resultado deseado. Esta etapa estimula tu creatividad y te ayuda a establecer metas claras. La visualización es una poderosa herramienta que activa tu mente para encontrar soluciones innovadoras.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-left-orange">
-                                <div class="card-body">
-                                    <h4 class="provincia-muevete">Muévete</h4>
-                                    <p>
-                                        Pasa a la acción. Este pilar representa la implementación de tus planes y la transformación de tus ideas en realidad. Incluye tanto el movimiento físico como la acción decisiva hacia tus objetivos.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-left-green">
-                                <div class="card-body">
-                                    <h4 class="provincia-ordena">Ordena</h4>
-                                    <p>
-                                        Organiza tu entorno y tus tareas. Este paso final consiste en establecer sistemas que te ayuden a mantener el orden, tanto en tu espacio físico como en tu planificación y gestión del tiempo.
-                                    </p>
-                                </div>
-                            </div>
+                    </div>
+                    
+                    <div class="pillar-card">
+                        <div class="pillar-header muevete-bg">
+                            <span class="pillar-icon"><i class="fas fa-running"></i></span>
+                            <span>MUÉVETE</span>
                         </div>
-                        
-                        <div class="alert alert-info">
-                            <h4>Aplicaciones Prácticas</h4>
-                            <p>
-                                El método MIMO puede aplicarse a una amplia variedad de aspectos de la vida, desde la organización del hogar y el espacio de trabajo, hasta la gestión de proyectos profesionales, el desarrollo personal y la planificación de objetivos a largo plazo.
-                            </p>
+                        <div class="pillar-body">
+                            Pasa a la acción e implementa tus planes.
+                        </div>
+                    </div>
+                    
+                    <div class="pillar-card">
+                        <div class="pillar-header ordena-bg">
+                            <span class="pillar-icon"><i class="fas fa-tasks"></i></span>
+                            <span>ORDENA</span>
+                        </div>
+                        <div class="pillar-body">
+                            Organiza tu entorno y establece sistemas.
                         </div>
                     </div>
                 </div>
+                
+                <div class="applications">
+                    <h3 class="applications-title">Aplicaciones Prácticas</h3>
+                    <div class="app-grid">
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span>Organización del hogar</span>
+                        </div>
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <span>Espacio de trabajo</span>
+                        </div>
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <span>Proyectos</span>
+                        </div>
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <span>Tiempo</span>
+                        </div>
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <span>Desarrollo personal</span>
+                        </div>
+                        <div class="app-item">
+                            <div class="app-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <span>Equilibrio vida-trabajo</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <a th:href="@{/tareas}" class="cta-button">
+                    <i class="fas fa-play-circle me-2"></i> Comenzar
+                </a>
             </div>
         </div>
-    </section>
+    </div>
 </body>
 </html>

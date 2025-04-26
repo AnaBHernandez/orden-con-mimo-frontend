@@ -86,7 +86,7 @@ async function handleEliminarEspacio(event) {
     
     const espacioId = event.target.dataset.id;
     try {
-        await fetchAPI(`espacios/${espacioId}`, { method: 'DELETE' });
+        await fetchAPI(`espacio/${espacioId}`, { method: 'DELETE' });
         notifySuccess('Espacio eliminado correctamente');
         cargarEspacios();
     } catch (error) {
@@ -96,7 +96,7 @@ async function handleEliminarEspacio(event) {
 
 async function cargarTareasDeEspacio(espacioId) {
     try {
-        const tareas = await fetchAPI(`espacios/${espacioId}/tareas`);
+        const tareas = await fetchAPI(`espacio/${espacioId}/tareas`);
         console.log(`Tareas del espacio ${espacioId}:`, tareas);
         
         const contenedorTareas = document.getElementById('tareas-espacio');

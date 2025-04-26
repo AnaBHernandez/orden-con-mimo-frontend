@@ -29,10 +29,12 @@ public class EstadisticasMimoController {
             conteos.put("MUEVETE", 0);
             conteos.put("ORDENA", 0);
             
-            for (Tarea tarea : tareas) {
-                String categoria = tarea.getCategoria();
-                if (categoria != null) {
-                    conteos.put(categoria, conteos.getOrDefault(categoria, 0) + 1);
+            if (tareas != null) {
+                for (Tarea tarea : tareas) {
+                    String categoria = tarea.getCategoria();
+                    if (categoria != null) {
+                        conteos.put(categoria, conteos.getOrDefault(categoria, 0) + 1);
+                    }
                 }
             }
             
@@ -42,7 +44,15 @@ public class EstadisticasMimoController {
             return "estadisticas";
         } catch (Exception e) {
             model.addAttribute("error", "No se pudieron cargar las estadísticas: " + e.getMessage());
-            return "error";
+            model.addAttribute("estadisticas", new HashMap<String, Integer>() {{
+                put("MIRATE", 0);
+                put("IMAGINA", 0);
+                put("MUEVETE", 0);
+                put("ORDENA", 0);
+            }});
+            model.addAttribute("title", "Estadísticas MIMO - Error");
+            
+            return "estadisticas";
         }
     }
 }

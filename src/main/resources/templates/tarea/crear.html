@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Tarea - El Reino de MIMO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         :root {
             --mimo-primary: #98D8C8;
@@ -16,41 +16,286 @@
             --muevete-color: #E67E22;
             --ordena-color: #27AE60;
         }
-
-        /* Estilos CSS aquí... */
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 1.8rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+            font-size: 0.9rem;
+        }
+        
+        input[type="text"], 
+        textarea, 
+        select, 
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, 
+        textarea:focus, 
+        select:focus, 
+        input[type="date"]:focus {
+            border-color: var(--mimo-secondary);
+            box-shadow: 0 0 0 2px rgba(137, 207, 240, 0.25);
+            outline: none;
+        }
+        
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn i {
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--mimo-primary), var(--mimo-secondary));
+            color: white;
+            box-shadow: 0 2px 5px rgba(137, 207, 240, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(137, 207, 240, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #eee;
+        }
+        
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 3px solid #721c24;
+            font-size: 0.85rem;
+        }
+        
+        /* Estilos para el selector visual de categorías */
+        .category-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .category-option {
+            flex: 1;
+            min-width: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .category-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .category-option.selected {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .category-mirate { border-color: var(--mirate-color); }
+        .category-mirate.selected { border-color: var(--mirate-color); }
+        .category-imagina { border-color: var(--imagina-color); }
+        .category-imagina.selected { border-color: var(--imagina-color); }
+        .category-muevete { border-color: var(--muevete-color); }
+        .category-muevete.selected { border-color: var(--muevete-color); }
+        .category-ordena { border-color: var(--ordena-color); }
+        .category-ordena.selected { border-color: var(--ordena-color); }
+        
+        .category-header {
+            padding: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        
+        .mirate-bg { background-color: var(--mirate-color); }
+        .imagina-bg { background-color: var(--imagina-color); color: #333; }
+        .muevete-bg { background-color: var(--muevete-color); }
+        .ordena-bg { background-color: var(--ordena-color); }
+        
+        .category-content {
+            padding: 8px;
+            text-align: center;
+            background: white;
+        }
+        
+        .category-icon {
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        .category-desc {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .field-hint {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        /* Ocultar el select original pero mantenerlo funcional */
+        .select-hidden {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1 th:text="${tarea.id != null ? 'Editar Tarea' : 'Nueva Tarea'}">Nueva Tarea</h1>
-
+        
         <div class="form-container">
-            <!-- Mostrar errores si hay -->
             <div class="error" th:if="${error}" th:text="${error}"></div>
-
-            <!-- Formulario corregido con action apuntando a /tareas/guardar -->
             <form th:action="@{/tareas/guardar}" method="post" th:object="${tarea}">
                 <input type="hidden" th:field="*{id}" />
             
                 <div class="form-group">
                     <label for="titulo">Título</label>
-                    <input type="text" id="titulo" th:field="*{titulo}" required />
+                    <input type="text" id="titulo" th:field="*{titulo}" required placeholder="Escribe el título..." />
+                    <div class="field-hint">Título descriptivo y conciso</div>
                 </div>
             
                 <div class="form-group">
-                    <label for="categoria">Categoría</label>
-                    <select id="categoria" th:field="*{categoria}" required>
+                    <label>Categoría MIMO</label>
+                    <select id="categoria" th:field="*{categoria}" required class="select-hidden">
                         <option value="MIRATE">Mírate - Conoce tus necesidades</option>
                         <option value="IMAGINA">Imagina - Visualiza tu espacio ideal</option>
                         <option value="MUEVETE">Muévete - Actúa para lograr el cambio</option>
                         <option value="ORDENA">Ordena - Mantén tu espacio organizado</option>
                     </select>
+                    
+                    <div class="category-selector">
+                        <div class="category-option category-mirate" data-value="MIRATE">
+                            <div class="category-header mirate-bg">
+                                <span class="category-icon"><i class="fas fa-eye"></i></span>
+                                <span>MÍRATE</span>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-desc">Conoce tus necesidades</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-option category-imagina" data-value="IMAGINA">
+                            <div class="category-header imagina-bg">
+                                <span class="category-icon"><i class="fas fa-lightbulb"></i></span>
+                                <span>IMAGINA</span>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-desc">Visualiza tu espacio ideal</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-option category-muevete" data-value="MUEVETE">
+                            <div class="category-header muevete-bg">
+                                <span class="category-icon"><i class="fas fa-running"></i></span>
+                                <span>MUÉVETE</span>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-desc">Actúa para el cambio</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-option category-ordena" data-value="ORDENA">
+                            <div class="category-header ordena-bg">
+                                <span class="category-icon"><i class="fas fa-tasks"></i></span>
+                                <span>ORDENA</span>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-desc">Mantén el orden</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" th:field="*{descripcion}" required></textarea>
+                    <textarea id="descripcion" th:field="*{descripcion}" required placeholder="Describe tu tarea..."></textarea>
                 </div>
             
                 <div class="form-group">
@@ -59,12 +304,33 @@
                 </div>
             
                 <div class="actions">
-                    <a href="/tareas" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a th:href="@{/tareas}" class="btn btn-secondary"><i class="fas fa-times"></i>Cancelar</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Guardar</button>
                 </div>
             </form>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryOptions = document.querySelectorAll('.category-option');
+            const selectElement = document.getElementById('categoria');
+            
+            const initialValue = selectElement.value;
+            categoryOptions.forEach(option => {
+                if (option.dataset.value === initialValue) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            categoryOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    categoryOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectElement.value = this.dataset.value;
+                });
+            });
+        });
+    </script>
 </body>
-
 </html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Espacio - El Reino de MIMO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            --mimo-primary: #98D8C8;
+            --mimo-secondary: #89CFF0;
+            --mimo-accent: #F5E6A8;
+            --mimo-text: #2A4747;
+            --mirate-color: #614385;
+            --imagina-color: #F1C40F;
+            --muevete-color: #E67E22;
+            --ordena-color: #27AE60;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--mimo-text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 1.8rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+            font-size: 0.9rem;
+        }
+        
+        input[type="text"], 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus, 
+        textarea:focus, 
+        select:focus {
+            border-color: var(--mimo-secondary);
+            box-shadow: 0 0 0 2px rgba(137, 207, 240, 0.25);
+            outline: none;
+        }
+        
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn i {
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--mimo-primary), var(--mimo-secondary));
+            color: white;
+            box-shadow: 0 2px 5px rgba(137, 207, 240, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(137, 207, 240, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #eee;
+        }
+        
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 3px solid #721c24;
+            font-size: 0.85rem;
+        }
+        
+        .field-hint {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Espacio</h1>
+        
+        <div class="form-container">
+            <div class="error" th:if="${error}" th:text="${error}"></div>
+            <form th:action="@{'/espacios/' + ${espacio.id} + '/actualizar'}" method="post" th:object="${espacio}">
+                <input type="hidden" th:field="*{id}" />
+            
+                <div class="form-group">
+                    <label for="nombre">Nombre del Espacio</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" required />
+                    <div class="field-hint">Nombre descriptivo para tu espacio de organización</div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}"></textarea>
+                    <div class="field-hint">Una breve descripción del espacio y su propósito</div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="tipo">Tipo de Espacio</label>
+                    <select id="tipo" th:field="*{tipo}" required>
+                        <option value="HOGAR">Hogar</option>
+                        <option value="TRABAJO">Trabajo</option>
+                        <option value="ESTUDIO">Estudio</option>
+                        <option value="DIGITAL">Digital</option>
+                        <option value="OTRO">Otro</option>
+                    </select>
+                    <div class="field-hint">Categoría que mejor define este espacio</div>
+                </div>
+            
+                <div class="actions">
+                    <a th:href="@{/espacios}" class="btn btn-secondary"><i class="fas fa-times"></i>Cancelar</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
