@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +10,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-mirate: #614385; /* Morado */
-            --color-imagina: #F1C40F; /* Dorado */
-            --color-muevete: #E67E22; /* Naranja */
-            --color-ordena: #27AE60; /* Verde */
+            --color-mirate: #614385;
+            /* Morado */
+            --color-imagina: #F1C40F;
+            /* Dorado */
+            --color-muevete: #E67E22;
+            /* Naranja */
+            --color-ordena: #27AE60;
+            /* Verde */
             --color-primary: #e0f7fa;
             --color-primary-dark: #89CFF0;
         }
-        
+
         /* Estilos existentes... */
-        
+
         /* Estilos para la navegación */
         .main-nav {
             background-color: var(--color-primary);
             padding: 12px 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .nav-list {
             display: flex;
             list-style: none;
@@ -35,7 +40,7 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        
+
         .nav-item a {
             text-decoration: none;
             color: #333;
@@ -44,17 +49,17 @@
             border-radius: 20px;
             transition: all 0.3s ease;
         }
-        
+
         .nav-item a:hover {
             background-color: var(--color-primary-dark);
             color: white;
         }
-        
+
         .nav-item.active a {
             background-color: var(--color-primary-dark);
             color: white;
         }
-        
+
         /* Media queries para responsividad */
         @media (max-width: 768px) {
             .nav-list {
@@ -67,6 +72,7 @@
     <!-- Bloque para estilos adicionales en páginas específicas -->
     <th:block th:replace="${styles}"></th:block>
 </head>
+
 <body>
     <div class="container">
         <!-- Navegación principal -->
@@ -75,34 +81,38 @@
                 <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active' : ''}">
                     <a href="/">Inicio</a>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/tareas') ? 'active' : ''}">
+                <li class="nav-item"
+                    th:classappend="${#httpServletRequest.getRequestURI().contains('/tareas') ? 'active' : ''}">
                     <a href="/tareas">Tareas</a>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/espacios') ? 'active' : ''}">
+                <li class="nav-item"
+                    th:classappend="${#httpServletRequest.getRequestURI().contains('/espacios') ? 'active' : ''}">
                     <a href="/espacios">Espacios</a>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/estadisticas') ? 'active' : ''}">
+                <li class="nav-item"
+                    th:classappend="${#httpServletRequest.getRequestURI().contains('/estadisticas') ? 'active' : ''}">
                     <a href="/estadisticas">Estadísticas</a>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI().contains('/sobre-mimo') ? 'active' : ''}">
-                    <a href="/sobre-mimo">Método MIMO</a>
+                <li class="nav-item" style="margin-left: auto;">
+                    <a href="/" style="background-color: #e74c3c; color: white;">Salir</a>
                 </li>
             </ul>
         </nav>
-        
+
         <!-- Contenido principal -->
         <main>
             <th:block th:replace="${content}"></th:block>
         </main>
-        
+
         <!-- Pie de página -->
         <footer class="footer">
             <hr>
             <p>© 2025 Reino MIMO - Sistema de Organización Personal</p>
         </footer>
     </div>
-    
+
     <!-- Bloque para scripts adicionales en páginas específicas -->
     <th:block th:replace="${scripts}"></th:block>
 </body>
+
 </html>

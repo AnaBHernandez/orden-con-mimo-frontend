@@ -36,7 +36,7 @@ public class EspacioController {
             model.addAttribute("espacios", espacios);
             model.addAttribute("title", "Mis Espacios MIMO");
 
-            return "index";  
+            return "espacios/index";  // Cambiar esta línea
         } catch (Exception e) {
             System.out.println("ERROR - En listarEspacios: " + e.getMessage());
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class EspacioController {
             model.addAttribute("espacios", Collections.emptyList());
             model.addAttribute("title", "Mis Espacios MIMO");
 
-            return "index";  
+            return "espacios/index";  
         }
     }
 

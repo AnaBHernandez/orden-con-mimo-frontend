@@ -2,9 +2,88 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas MIMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --color-mirate: #614385; /* Morado */
+            --color-imagina: #F1C40F; /* Dorado */
+            --color-muevete: #E67E22; /* Naranja */
+            --color-ordena: #27AE60; /* Verde */
+            --color-primary: #e0f7fa;
+            --color-primary-dark: #89CFF0;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        /* Estilos para la navegación */
+        .main-nav {
+            background-color: var(--color-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--color-primary-dark);
+            color: white;
+        }
+
+        .nav-item.active a {
+            background-color: var(--color-primary-dark);
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Estilos para estadísticas */
         .stats-container {
             background: white;
             border-radius: 15px;
@@ -42,22 +121,22 @@
         }
         
         .stats-card.mirate {
-            background: linear-gradient(135deg, #614385 0%, #516395 100%);
+            background: linear-gradient(135deg, var(--color-mirate) 0%, #516395 100%);
             color: white;
         }
         
         .stats-card.imagina {
-            background: linear-gradient(135deg, #F1C40F 0%, #F39C12 100%);
+            background: linear-gradient(135deg, var(--color-imagina) 0%, #F39C12 100%);
             color: white;
         }
         
         .stats-card.muevete {
-            background: linear-gradient(135deg, #E67E22 0%, #D35400 100%);
+            background: linear-gradient(135deg, var(--color-muevete) 0%, #D35400 100%);
             color: white;
         }
         
         .stats-card.ordena {
-            background: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+            background: linear-gradient(135deg, var(--color-ordena) 0%, #2ECC71 100%);
             color: white;
         }
         
@@ -87,11 +166,70 @@
         .split-item {
             flex: 1;
         }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -10px;
+        }
+        
+        .col-md-3 {
+            flex: 0 0 25%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+            }
+            
+            .col-md-3 {
+                flex: 0 0 50%;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .col-md-3 {
+                flex: 0 0 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <div>
-        <div class="container py-3">
+    <div class="container">
+        <!-- Navegación principal -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/tareas">Tareas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/espacios">Espacios</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/estadisticas">Estadísticas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/sobre-mimo">Método MIMO</a>
+                </li>
+                <li class="nav-item" style="margin-left: auto;">
+                    <a href="/" style="background-color: #e74c3c; color: white;">Salir</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main>
             <div class="stats-container">
                 <h1 class="stats-title">Estadísticas MIMO</h1>
                 <p class="stats-subtitle">Análisis de tus tareas por categoría</p>
@@ -109,40 +247,46 @@
                     </div>
                 </div>
                 
-                <div class="row g-3">
+                <div class="row">
                     <div class="col-md-3">
                         <div class="stats-card mirate">
-                            <i class="fas fa-eye stats-icon"></i>
+                            <i class="stats-icon">👁️</i>
                             <div class="stats-number" th:text="${estadisticas.MIRATE}">0</div>
                             <div class="stats-label">Tareas de<br/>auto-observación</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="stats-card imagina">
-                            <i class="fas fa-lightbulb stats-icon"></i>
+                            <i class="stats-icon">💡</i>
                             <div class="stats-number" th:text="${estadisticas.IMAGINA}">0</div>
                             <div class="stats-label">Tareas de<br/>creatividad</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="stats-card muevete">
-                            <i class="fas fa-running stats-icon"></i>
+                            <i class="stats-icon">🏃</i>
                             <div class="stats-number" th:text="${estadisticas.MUEVETE}">0</div>
                             <div class="stats-label">Tareas de<br/>acción</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="stats-card ordena">
-                            <i class="fas fa-tasks stats-icon"></i>
+                            <i class="stats-icon">📋</i>
                             <div class="stats-number" th:text="${estadisticas.ORDENA}">0</div>
                             <div class="stats-label">Tareas de<br/>organización</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Pie de página -->
+        <footer class="footer">
+            <hr>
+            <p>© 2025 Reino MIMO - Sistema de Organización Personal</p>
+        </footer>
     </div>
-    
+
     <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         // Obtener datos del modelo Thymeleaf

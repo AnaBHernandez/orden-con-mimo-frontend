@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Tareas - El Reino de MIMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            --color-mirate: #614385; /* Morado */
+            --color-imagina: #F1C40F; /* Dorado */
+            --color-muevete: #E67E22; /* Naranja */
+            --color-ordena: #27AE60; /* Verde */
+            --color-primary: #e0f7fa;
+            --color-primary-dark: #89CFF0;
             --mimo-primary: #98D8C8;
             --mimo-secondary: #89CFF0;
             --mimo-accent: #F5E6A8;
             --mimo-text: #2A4747;
-            --mirate-color: #614385;
-            --imagina-color: #F1C40F;
-            --muevete-color: #E67E22;
-            --ordena-color: #27AE60;
         }
         
         body {
+            font-family: 'Lato', sans-serif;
             background: linear-gradient(135deg, var(--mimo-primary) 0%, var(--mimo-secondary) 100%);
-            font-family: Arial, sans-serif;
             color: var(--mimo-text);
             margin: 0;
             padding: 20px;
@@ -61,29 +66,97 @@
         }
         
         .mirate {
-            border-left: 5px solid var(--mirate-color);
+            border-left: 5px solid var(--color-mirate);
         }
         
         .imagina {
-            border-left: 5px solid var(--imagina-color);
+            border-left: 5px solid var(--color-imagina);
         }
         
         .muevete {
-            border-left: 5px solid var(--muevete-color);
+            border-left: 5px solid var(--color-muevete);
         }
         
         .ordena {
-            border-left: 5px solid var(--ordena-color);
+            border-left: 5px solid var(--color-ordena);
+        }
+        
+        /* Estilos para la navegación */
+        .main-nav {
+            background-color: var(--color-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--color-primary-dark);
+            color: white;
+        }
+
+        .nav-item.active a {
+            background-color: var(--color-primary-dark);
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Barra de navegación -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/">Inicio</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/tareas" style="background-color: #89CFF0; color: white;">Tareas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/espacios">Espacios</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/estadisticas">Estadísticas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/sobre-mimo">Método MIMO</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" style="background-color: #e74c3c; color: white;">Salir</a>
+                </li>
+            </ul>
+        </nav>
+
         <h1>Mis Tareas del Reino</h1>
         
         <div class="actions">
-            <a href="/" class="btn" style="background-color: #f8f9fa; color: var(--mimo-text);">Volver al Inicio</a>
-            <a href="/tareas/nueva" class="btn" style="background-color: var(--mimo-primary); color: var(--mimo-text);">Nueva Tarea</a>
+            <a href="/tareas/nueva" class="btn" style="background-color: var(--mimo-primary); color: var(--mimo-text);">
+                <span style="margin-right: 5px;">+</span> Nueva Tarea
+            </a>
         </div>
         
         <div th:if="${tareas != null && !tareas.isEmpty()}">
@@ -95,15 +168,24 @@
                 <p th:text="${tarea.descripcion}">Descripción de la tarea</p>
                 <p>Fecha límite: <span th:text="${#temporals.format(tarea.fechaLimite, 'dd/MM/yyyy')}">01/01/2023</span></p>
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-                    <a th:href="@{/tareas/{id}/editar(id=${tarea.id})}" class="btn" style="background-color: var(--imagina-color); color: var(--mimo-text);">Editar</a>
+                    <a th:href="@{/tareas/{id}/editar(id=${tarea.id})}" class="btn" style="background-color: var(--color-imagina); color: var(--mimo-text);">Editar</a>
                     <a th:href="@{/tareas/{id}/eliminar(id=${tarea.id})}" class="btn" style="background-color: #f8d7da; color: #721c24;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tarea?')">Eliminar</a>
                 </div>
             </div>
         </div>
         
-        <div th:if="${tareas == null || tareas.isEmpty()}" style="background-color: white; padding: 20px; border-radius: 10px; text-align: center;">
-            <p>No hay tareas disponibles.</p>
+        <div th:if="${tareas == null || tareas.isEmpty()}" style="background-color: white; padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px;">
+            <p style="margin-bottom: 15px;">No hay tareas pendientes. ¡Añade una!</p>
+            <a href="/tareas/nueva" class="btn" style="background-color: var(--mimo-primary); color: var(--mimo-text);">
+                <span style="margin-right: 5px;">+</span> Crear mi primera tarea
+            </a>
         </div>
+        
+        <!-- Pie de página -->
+        <footer style="margin-top: 40px; text-align: center; color: #666; font-size: 0.9rem;">
+            <hr style="border: none; height: 1px; background-color: rgba(0,0,0,0.1); margin: 20px 0;">
+            <p>© 2025 Reino MIMO - Sistema de Organización Personal</p>
+        </footer>
     </div>
 </body>
 </html>

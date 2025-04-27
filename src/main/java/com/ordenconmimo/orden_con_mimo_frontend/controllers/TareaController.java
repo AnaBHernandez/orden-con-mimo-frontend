@@ -88,12 +88,8 @@ public class TareaController {
     @GetMapping("/{id}/eliminar")
     public String eliminarTarea(@PathVariable Long id) {
         try {
-            boolean eliminado = tareaApiService.eliminarTarea(id);
-            if (eliminado) {
-                return "redirect:/tareas?mensaje=Tarea eliminada correctamente";
-            } else {
-                return "redirect:/tareas?error=No se pudo eliminar la tarea";
-            }
+            tareaApiService.eliminarTarea(id);
+            return "redirect:/tareas?mensaje=Tarea eliminada correctamente";
         } catch (Exception e) {
             return "redirect:/tareas?error=" + e.getMessage();
         }

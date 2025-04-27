@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
 
 @Service
+@SuppressWarnings("all")
 public class TareaApiService {
 
     private final RestTemplate restTemplate;
@@ -92,7 +93,7 @@ public class TareaApiService {
         }
     }
 
-    public Tarea obtenerTareaPorId(long id) {
+    public Tarea obtenerTareaPorId(Long id) {
         try {
             String url = apiUrl + "/" + id;
             System.out.println("Conectando a: " + url);
@@ -189,6 +190,9 @@ public class TareaApiService {
             if (tarea.getCategoria() != null) {
                 requestMap.put("categoria", tarea.getCategoria());
             }
+            
+            // Asegurar que completada no sea nulo
+            requestMap.put("completada", tarea.isCompletada());
     
             if (tarea.getFechaLimite() != null) {
                 requestMap.put("fechaLimite", tarea.getFechaLimite().toString());
@@ -236,6 +240,10 @@ public class TareaApiService {
                     if (responseMap.containsKey("categoria") && responseMap.get("categoria") != null) {
                         tareaCreada.setCategoria(responseMap.get("categoria").toString());
                     }
+                    
+                    if (responseMap.containsKey("completada") && responseMap.get("completada") != null) {
+                        tareaCreada.setCompletada((Boolean) responseMap.get("completada"));
+                    }
                 }
     
                 return tareaCreada;
@@ -256,7 +264,6 @@ public class TareaApiService {
             throw new RuntimeException("Error al crear la tarea: " + e.getMessage());
         }
     }
-
 
     public Tarea guardarTarea(Tarea tarea) {
         return crearTarea(tarea);
@@ -280,69 +287,164 @@ public class TareaApiService {
 
             if (tarea.getFechaLimite() != null) {
                 requestMap.put("fechaLimite", tarea.getFechaLimite().toString());
-                System.out.println("Enviando fecha límite: " + tarea.getFechaLimite().toString());
             } else if (tarea.getFechaLimiteStr() != null && !tarea.getFechaLimiteStr().isEmpty()) {
                 try {
                     LocalDate fecha = LocalDate.parse(tarea.getFechaLimiteStr());
                     requestMap.put("fechaLimite", fecha.toString());
-                    System.out.println("Enviando fecha límite desde string: " + fecha);
                 } catch (Exception e) {
                     System.err.println("Error al convertir fechaLimiteStr: " + e.getMessage());
                 }
             }
 
-            System.out.println("Actualizando tarea en: " + url);
-            System.out.println("Enviando datos para actualizar: " + requestMap);
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestMap, headers);
 
-            restTemplate.put(url, requestEntity);
+            ResponseEntity<Object> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.PUT,
+                    requestEntity,
+                    Object.class);
 
-            return obtenerTareaPorId(tarea.getId());
+            if (response.getBody() instanceof Map) {
+                Map<String, Object> responseMap = (Map<String, Object>) response.getBody();
+                Tarea tareaActualizada = new Tarea();
+
+                if (responseMap.containsKey("id") && responseMap.get("id") != null) {
+                    tareaActualizada.setId(Long.valueOf(responseMap.get("id").toString()));
+                }
+                if (responseMap.containsKey("nombre") && responseMap.get("nombre") != null) {
+                    tareaActualizada.setTitulo(responseMap.get("nombre").toString());
+                }
+                if (responseMap.containsKey("descripcion") && responseMap.get("descripcion") != null) {
+                    tareaActualizada.setDescripcion(responseMap.get("descripcion").toString());
+                }
+                if (responseMap.containsKey("categoria") && responseMap.get("categoria") != null) {
+                    tareaActualizada.setCategoria(responseMap.get("categoria").toString());
+                }
+                if (responseMap.containsKey("completada") && responseMap.get("completada") != null) {
+                    tareaActualizada.setCompletada((Boolean) responseMap.get("completada"));
+                }
+
+                return tareaActualizada;
+            }
+
+            return null;
         } catch (HttpClientErrorException e) {
             System.err.println("Error HTTP: " + e.getStatusCode() + " - " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error al actualizar la tarea: " + e.getMessage());
         } catch (ResourceAccessException e) {
             System.err.println("Error de conexión: " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error de conexión al actualizar la tarea: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Error al actualizar tarea: " + e.getMessage());
+            System.err.println("Error al actualizar la tarea: " + e.getMessage());
             System.err.println("Detalles del error: " + e.toString());
-            return null;
+            throw new RuntimeException("Error al actualizar la tarea: " + e.getMessage());
         }
     }
 
-    public boolean eliminarTarea(Long id) {
+    public Tarea actualizarTarea(Long id, Tarea tarea) {
+        tarea.setId(id);
+        return actualizarTarea(tarea);
+    }
+
+    public void eliminarTarea(Long id) {
         try {
             String url = apiUrl + "/" + id;
-            System.out.println("Eliminando tarea en: " + url);
-
-            HttpHeaders headers = new HttpHeaders();
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
-            ResponseEntity<Void> response = restTemplate.exchange(
+            restTemplate.exchange(
                     url,
                     HttpMethod.DELETE,
-                    requestEntity,
-                    Void.class);
-
-            System.out.println("Respuesta recibida, status: " + response.getStatusCode());
-
-            return response.getStatusCode().is2xxSuccessful();
+                    null,
+                    Object.class);
         } catch (HttpClientErrorException e) {
-            System.err.println("Error HTTP: " + e.getStatusCode());
-            System.err.println("Respuesta: " + e.getResponseBodyAsString());
-            System.err.println("Detalles del error: " + e.toString());
-            return false;
+            System.err.println("Error HTTP: " + e.getStatusCode() + " - " + e.getMessage());
         } catch (ResourceAccessException e) {
             System.err.println("Error de conexión: " + e.getMessage());
-            return false;
         } catch (Exception e) {
-            System.err.println("Error al eliminar tarea: " + e.getMessage());
+            System.err.println("Error al eliminar la tarea: " + e.getMessage());
             System.err.println("Detalles del error: " + e.toString());
-            return false;
+        }
+    }
+
+    public List<Tarea> obtenerTareasPorCategoria(String categoria) {
+        try {
+            String url = apiUrl + "/categorias/" + categoria;
+            ResponseEntity<Object> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    Object.class);
+
+            List<Tarea> tareas = new ArrayList<>();
+            if (response.getBody() instanceof List) {
+                List<?> tareasResponse = (List<?>) response.getBody();
+                for (Object obj : tareasResponse) {
+                    if (obj instanceof Map) {
+                        Map<String, Object> tareaMap = (Map<String, Object>) obj;
+                        Tarea tarea = new Tarea();
+                        
+                        if (tareaMap.containsKey("id") && tareaMap.get("id") != null) {
+                            tarea.setId(Long.valueOf(tareaMap.get("id").toString()));
+                        }
+                        if (tareaMap.containsKey("nombre") && tareaMap.get("nombre") != null) {
+                            tarea.setTitulo(tareaMap.get("nombre").toString());
+                        }
+                        if (tareaMap.containsKey("descripcion") && tareaMap.get("descripcion") != null) {
+                            tarea.setDescripcion(tareaMap.get("descripcion").toString());
+                        }
+                        if (tareaMap.containsKey("categoria") && tareaMap.get("categoria") != null) {
+                            tarea.setCategoria(tareaMap.get("categoria").toString());
+                        }
+                        
+                        tareas.add(tarea);
+                    }
+                }
+            }
+            return tareas;
+        } catch (Exception e) {
+            System.err.println("Error al obtener tareas por categoría: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Tarea> obtenerTareasPorEspacio(Long espacioId) {
+        try {
+            String url = apiUrl + "/espacios/" + espacioId;
+            ResponseEntity<Object> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    Object.class);
+
+            List<Tarea> tareas = new ArrayList<>();
+            if (response.getBody() instanceof List) {
+                List<?> tareasResponse = (List<?>) response.getBody();
+                for (Object obj : tareasResponse) {
+                    if (obj instanceof Map) {
+                        Map<String, Object> tareaMap = (Map<String, Object>) obj;
+                        Tarea tarea = new Tarea();
+                        
+                        if (tareaMap.containsKey("id") && tareaMap.get("id") != null) {
+                            tarea.setId(Long.valueOf(tareaMap.get("id").toString()));
+                        }
+                        if (tareaMap.containsKey("nombre") && tareaMap.get("nombre") != null) {
+                            tarea.setTitulo(tareaMap.get("nombre").toString());
+                        }
+                        if (tareaMap.containsKey("descripcion") && tareaMap.get("descripcion") != null) {
+                            tarea.setDescripcion(tareaMap.get("descripcion").toString());
+                        }
+                        if (tareaMap.containsKey("categoria") && tareaMap.get("categoria") != null) {
+                            tarea.setCategoria(tareaMap.get("categoria").toString());
+                        }
+                        
+                        tareas.add(tarea);
+                    }
+                }
+            }
+            return tareas;
+        } catch (Exception e) {
+            System.err.println("Error al obtener tareas por espacio: " + e.getMessage());
+            return new ArrayList<>();
         }
     }
 }

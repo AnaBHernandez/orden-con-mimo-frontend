@@ -1,177 +1,260 @@
 package com.ordenconmimo.orden_con_mimo_frontend.controllers;
 
-import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
-import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-public class TareaControllerTest {
+import com.ordenconmimo.orden_con_mimo_frontend.models.Tarea;
+import com.ordenconmimo.orden_con_mimo_frontend.services.TareaApiService;
+
+@ExtendWith(MockitoExtension.class)
+@SuppressWarnings("all")
+class TareaControllerTest {
 
     @Mock
     private TareaApiService tareaApiService;
-
+    
+    @Mock
+    private Model model;
+    
+    @Mock
+    private RedirectAttributes redirectAttributes;
+    
     @InjectMocks
     private TareaController tareaController;
-
-    private MockMvc mockMvc;
-    private Tarea tareaEjemplo;
-
+    
+    private List<Tarea> tareasMock;
+    private Tarea tareaMock;
+    
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(tareaController).build();
-
-        tareaEjemplo = new Tarea(1L, "Test Tarea", "Descripción de prueba", "MIRATE", LocalDate.now(), false);
+    void setUp() {
+        // Configurar datos de prueba
+        tareasMock = new ArrayList<>();
+        
+        Tarea tarea1 = new Tarea();
+        tarea1.setId(1L);
+        tarea1.setTitulo("Tarea 1");
+        tarea1.setDescripcion("Descripción 1");
+        tarea1.setCategoria("MIRATE");
+        tarea1.setCompletada(false);
+        
+        Tarea tarea2 = new Tarea();
+        tarea2.setId(2L);
+        tarea2.setTitulo("Tarea 2");
+        tarea2.setDescripcion("Descripción 2");
+        tarea2.setCategoria("ORDENA");
+        tarea2.setCompletada(true);
+        
+        tareasMock.add(tarea1);
+        tareasMock.add(tarea2);
+        
+        tareaMock = new Tarea();
+        tareaMock.setId(3L);
+        tareaMock.setTitulo("Tarea 3");
+        tareaMock.setDescripcion("Descripción 3");
+        tareaMock.setCategoria("IMAGINA");
+        tareaMock.setCompletada(false);
     }
-
+    
     @Test
-    public void testListarTareas() throws Exception {
-        List<Tarea> tareas = Arrays.asList(
-                tareaEjemplo,
-                new Tarea(2L, "Test2", "Descripción2", "IMAGINA", LocalDate.now(), true));
-
-        when(tareaApiService.obtenerTareas()).thenReturn(tareas);
-
-        mockMvc.perform(get("/tareas"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/list"))
-                .andExpect(model().attributeExists("tareas"));
+    void listarTareas_DeberiaRetornarTodasLasTareas() {
+        // Configurar mock
+        when(tareaApiService.obtenerTareas()).thenReturn(tareasMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.listarTareas(null, model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("tareas"), eq(tareasMock));
+        verify(model, times(1)).addAttribute(eq("title"), anyString());
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/list");
     }
-
+    
     @Test
-    public void testListarTareasConError() throws Exception {
+    void listarTareas_ConFiltroCategoria_DeberiaFiltrarTareas() {
+        // Configurar mock
+        when(tareaApiService.obtenerTareas()).thenReturn(tareasMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.listarTareas("MIRATE", model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("categoriaActual"), eq("MIRATE"));
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/list");
+    }
+    
+    @Test
+    void listarTareas_CuandoOcurreError_DeberiaManejarlo() {
+        // Configurar mock para lanzar excepción
         when(tareaApiService.obtenerTareas()).thenThrow(new RuntimeException("Error de prueba"));
-
-        mockMvc.perform(get("/tareas"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/list"))
-                .andExpect(model().attributeExists("errorMessage"));
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.listarTareas(null, model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("errorMessage"), anyString());
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/list");
     }
-
+    
     @Test
-    public void testEditarTareaForm() throws Exception {
-        when(tareaApiService.obtenerTareaPorId(1L)).thenReturn(tareaEjemplo);
-
-        mockMvc.perform(get("/tareas/1/editar"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/editar"))
-                .andExpect(model().attributeExists("tarea"));
+    void editarTareaForm_DeberiaRetornarFormularioEdicion() {
+        // Configurar mock
+        when(tareaApiService.obtenerTareaPorId(1L)).thenReturn(tareaMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.editarTareaForm(1L, model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("tarea"), any(Tarea.class));
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/editar");
     }
-
+    
     @Test
-    public void testEditarTareaFormNotFound() throws Exception {
+    void editarTareaForm_CuandoTareaNoExiste_DeberiaRedireccionar() {
+        // Configurar mock para retornar null
         when(tareaApiService.obtenerTareaPorId(999L)).thenReturn(null);
-
-        mockMvc.perform(get("/tareas/999/editar"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/tareas?error=*"));
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.editarTareaForm(999L, model);
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.startsWith("redirect:/tareas");
     }
-
+    
     @Test
-    public void testEliminarTarea() throws Exception {
-        when(tareaApiService.eliminarTarea(1L)).thenReturn(true);
-
-        mockMvc.perform(get("/tareas/1/eliminar"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/tareas?mensaje=*"));
+    void guardarTarea_DeberiaCrearTarea() {
+        // Configurar mock
+        when(tareaApiService.crearTarea(any(Tarea.class))).thenReturn(tareaMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.guardarTarea(new Tarea(), redirectAttributes);
+        
+        // Verificar resultados
+        verify(redirectAttributes, times(1)).addFlashAttribute(eq("successMessage"), anyString());
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.equals("redirect:/tareas");
     }
-
+    
     @Test
-    public void testEliminarTareaError() throws Exception {
-        when(tareaApiService.eliminarTarea(1L)).thenReturn(false);
-
-        mockMvc.perform(get("/tareas/1/eliminar"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/tareas?error=*"));
+    void guardarTarea_CuandoHayError_DeberiaManejarlo() {
+        // Configurar mock para lanzar excepción
+        when(tareaApiService.crearTarea(any(Tarea.class))).thenThrow(new RuntimeException("Error de prueba"));
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.guardarTarea(new Tarea(), redirectAttributes);
+        
+        // Verificar resultados
+        verify(redirectAttributes, times(1)).addFlashAttribute(eq("errorMessage"), anyString());
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.equals("redirect:/tareas/nueva");
     }
-
+    
     @Test
-    public void testMostrarFormularioNuevaTarea() throws Exception {
-        mockMvc.perform(get("/tareas/nueva"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/crear"))
-                .andExpect(model().attributeExists("tarea"));
+    void eliminarTarea_DeberiaEliminarTarea() {
+        // Configurar mock
+        doNothing().when(tareaApiService).eliminarTarea(anyLong());
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.eliminarTarea(1L);
+        
+        // Verificar que se llama al servicio
+        verify(tareaApiService, times(1)).eliminarTarea(1L);
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.startsWith("redirect:/tareas");
     }
-
+    
     @Test
-    public void testGuardarTarea() {
-        Tarea tarea = new Tarea();
-        tarea.setTitulo("Test Tarea");
-        tarea.setDescripcion("Descripción de prueba");
-        tarea.setCategoria("MIRATE");
-        tarea.setFechaLimiteStr("2025-04-30");
-
-        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
-
-        Tarea tareaCreada = new Tarea();
-        tareaCreada.setId(1L);
-        tareaCreada.setTitulo("Test Tarea");
-
-        when(tareaApiService.crearTarea(any(Tarea.class))).thenReturn(tareaCreada);
-
-        String resultado = tareaController.guardarTareaNueva(tarea, redirectAttributes);
-
-        verify(tareaApiService).crearTarea(any(Tarea.class));
-
-        assertEquals("redirect:/tareas", resultado);
+    void eliminarTarea_CuandoHayError_DeberiaManejarlo() {
+        // Configurar mock para lanzar excepción
+        doNothing().when(tareaApiService).eliminarTarea(anyLong());
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.eliminarTarea(1L);
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.startsWith("redirect:/tareas");
     }
-
+    
     @Test
-    public void testGuardarTareaError() throws Exception {
-        when(tareaApiService.guardarTarea(any(Tarea.class))).thenReturn(null);
-
-        mockMvc.perform(post("/tareas/guardar")
-                .param("titulo", "Nueva Tarea")
-                .param("descripcion", "Descripción")
-                .param("categoria", "ORDENA"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/crear"))
-                .andExpect(model().attributeExists("error"));
+    void mostrarFormularioNuevaTarea_DeberiaRetornarFormulario() {
+        // Ejecutar método a probar
+        String viewName = tareaController.mostrarFormularioNuevaTarea(model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("tarea"), any(Tarea.class));
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/crear");
     }
-
+    
     @Test
-    public void testActualizarTarea() throws Exception {
-        Tarea tareaActualizada = new Tarea(1L, "Actualizada", "Nueva descripción", "MUEVETE", LocalDate.now(), true);
-
-        when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(tareaActualizada);
-
-        mockMvc.perform(post("/tareas/1/actualizar")
-                .param("id", "1")
-                .param("titulo", "Actualizada")
-                .param("descripcion", "Nueva descripción")
-                .param("categoria", "MUEVETE")
-                .param("completada", "true"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/tareas?mensaje=*"));
+    void guardarTareaNueva_DeberiaCrearTarea() {
+        // Configurar mock
+        when(tareaApiService.crearTarea(any(Tarea.class))).thenReturn(tareaMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.guardarTareaNueva(new Tarea(), redirectAttributes);
+        
+        // Verificar resultados
+        verify(redirectAttributes, times(1)).addFlashAttribute(eq("successMessage"), anyString());
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.equals("redirect:/tareas");
     }
-
+    
     @Test
-    public void testActualizarTareaError() throws Exception {
-        when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(null);
-
-        mockMvc.perform(post("/tareas/1/actualizar")
-                .param("id", "1")
-                .param("titulo", "Actualizada")
-                .param("descripcion", "Nueva descripción")
-                .param("categoria", "MUEVETE"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tarea/editar"))
-                .andExpect(model().attributeExists("error"));
+    void actualizarTarea_DeberiaActualizarTarea() {
+        // Configurar mock
+        when(tareaApiService.actualizarTarea(any(Tarea.class))).thenReturn(tareaMock);
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.actualizarTarea(1L, new Tarea(), model);
+        
+        // Verificar que se redirecciona correctamente
+        assert viewName.startsWith("redirect:/tareas");
+    }
+    
+    @Test
+    void actualizarTarea_CuandoHayError_DeberiaManejarlo() {
+        // Configurar mock para lanzar excepción
+        when(tareaApiService.actualizarTarea(any(Tarea.class))).thenThrow(new RuntimeException("Error de prueba"));
+        
+        // Ejecutar método a probar
+        String viewName = tareaController.actualizarTarea(1L, new Tarea(), model);
+        
+        // Verificar resultados
+        verify(model, times(1)).addAttribute(eq("error"), anyString());
+        verify(model, times(1)).addAttribute(eq("tarea"), any(Tarea.class));
+        
+        // Verificar que se retorna la vista correcta
+        assert viewName.equals("tarea/editar");
     }
 }

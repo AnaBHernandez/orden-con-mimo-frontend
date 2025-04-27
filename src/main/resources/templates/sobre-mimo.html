@@ -3,12 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Sobre el Método MIMO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* Estilo global para usar la fuente Lato en todo el documento */
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        /* Estilos para la barra de navegación moderna */
+        .nav-bar {
+            background-color: #e0f7fa;
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .nav-link:hover {
+            background-color: #89CFF0;
+            color: white;
+        }
+        
+        .nav-link.active {
+            background-color: #89CFF0;
+            color: white;
+        }
+        
+        .nav-link.exit {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        /* Resto de los estilos para la página Método MIMO */
         .mimo-container {
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Lato', sans-serif;
         }
         
         .mimo-title {
@@ -20,6 +81,7 @@
             font-weight: 900;
             font-size: 2.5rem;
             letter-spacing: 2px;
+            font-family: 'Lato', sans-serif;
         }
         
         .mimo-subtitle {
@@ -214,11 +276,36 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .py-3 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
-    <div>
-        <div class="container py-3">
+    <div class="container">
+        <!-- Barra de navegación moderna similar a la de la segunda imagen -->
+        <nav class="nav-bar">
+            <div class="nav-links">
+                <a href="/" class="nav-link">Inicio</a>
+                <a href="/tareas" class="nav-link">Tareas</a>
+                <a href="/espacios" class="nav-link">Espacios</a>
+                <a href="/estadisticas" class="nav-link">Estadísticas</a>
+                <a href="/sobre-mimo" class="nav-link active">Método MIMO</a>
+            </div>
+            <a href="/" class="nav-link exit">Salir</a>
+        </nav>
+        
+        <div class="py-3">
             <div class="mimo-container">
                 <h1 class="mimo-title">El Método MIMO</h1>
                 
@@ -327,5 +414,8 @@
             </div>
         </div>
     </div>
+    
+    <!-- Script para cargar los íconos de Font Awesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
