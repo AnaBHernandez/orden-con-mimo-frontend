@@ -19,77 +19,121 @@ El esquema de colores principal de la aplicación es:
 - Secondary: #89CFF0 (Azul bebé)
 
 ## 🛠️ Tecnologías
-- **Spring Boot**: Framework base para la aplicación
+- **Spring Boot 3.4.4**: Framework base para la aplicación
+- **Java 21**: Lenguaje de programación
 - **Thymeleaf**: Motor de plantillas para renderizar vistas
 - **JavaScript**: Para interactividad y comunicación con la API
 - **Bootstrap**: Framework CSS para el diseño responsive
 - **CSS personalizado**: Para implementar el tema Reino MIMO
+- **H2 Database**: Base de datos en memoria para desarrollo
 
 ## 🚀 Instalación y ejecución
 
 ### Requisitos previos
-- Java 17 o superior
-- Maven
+- Java 21 o superior
+- Maven 3.9+
 
 ### Pasos
-1. Clonar el repositorio:
+1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/tu-usuario/orden-con-mimo-frontend.git
+   git clone https://github.com/AnaBHernandez/orden-con-mimo-frontend.git
    cd orden-con-mimo-frontend
+   ```
 
-2. Compilar el proyecto:
-./mvnw clean package
-3. Ejecutar la aplicación:
-./mvnw spring-boot:run
-4. Acceder a la aplicación en el navegador:
-./mvnw spring-boot:run
+2. **Compilar el proyecto:**
+   ```bash
+   ./mvnw clean compile
+   ```
 
-Nota: Asegúrate de que el backend esté ejecutándose en http://localhost:8082 para que la comunicación con la API funcione correctamente.
+3. **Ejecutar la aplicación:**
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-```
-📂 Estructura del proyecto
+4. **Acceder a la aplicación:**
+   - **URL**: http://localhost:8083
+   - **Credenciales**:
+     - Usuario: `admin`
+     - Contraseña: `password`
+
+### 🔧 Configuración de Puertos
+- **Frontend**: Puerto 8083
+- **Backend API**: Puerto 8084
+- **H2 Console**: http://localhost:8083/h2-console
+
+> **Nota**: Asegúrate de que el backend esté ejecutándose en http://localhost:8084 para que la comunicación con la API funcione correctamente.
+
+## 📂 Estructura del proyecto
 La estructura del proyecto sigue una organización por componentes funcionales:
 
+```
 src/
 ├── main/
 │   ├── java/
 │   │   └── com/
 │   │       └── ordenconmimo/
 │   │           └── orden_con_mimo_frontend/
-│   │               ├── controllers/
-│   │               └── config/
+│   │               ├── controllers/     # Controladores REST
+│   │               ├── services/        # Servicios de negocio
+│   │               ├── models/          # Entidades del dominio
+│   │               └── config/          # Configuraciones
 │   └── resources/
 │       ├── static/
-│       │   ├── css/
-│       │   ├── js/
-│       │   └── img/
+│       │   ├── css/                    # Estilos personalizados
+│       │   ├── js/                     # JavaScript del frontend
+│       │   └── images/                  # Recursos estáticos
 │       └── templates/
-│           ├── index.html
-│           ├── tarea/
-│           └── espacio/
-
+│           ├── index.html              # Página principal
+│           ├── login.html              # Página de autenticación
+│           ├── tarea/                  # Plantillas de tareas
+│           └── espacios/               # Plantillas de espacios
 ```
 
-```
-🔄 Comunicación con el backend
+## 🔄 Comunicación con el backend
 El frontend se comunica con el backend a través de APIs REST:
 
-API de Tareas: Gestión de tareas personales
-API de Espacios: Gestión de espacios organizativos
-La configuración para la comunicación con la API se encuentra en /js/comun/config.js.
-```
+- **API de Tareas**: Gestión de tareas personales
+- **API de Espacios**: Gestión de espacios organizativos
+- **Configuración**: `/js/comun/config.js`
 
-📚 Documentación
-Para más información sobre el proyecto, consulta la Wiki del repositorio.
+## 🔐 Autenticación
+La aplicación incluye un sistema de autenticación básico:
 
-```🤝 Contribución
-Haz fork del proyecto
-Crea una rama para tu funcionalidad (git checkout -b feature/amazing-feature)
-Haz commit de tus cambios (git commit -m 'Add some amazing feature')
-Push a la rama (git push origin feature/amazing-feature)
-Abre un Pull Request
-```
+- **Endpoint de login**: `/login`
+- **Credenciales por defecto**:
+  - Usuario: `admin`
+  - Contraseña: `password`
+- **Sesiones**: Basadas en HttpSession
 
-📜 Licencia
+## 📚 Documentación
+Para más información sobre el proyecto, consulta la [Wiki oficial del repositorio](https://github.com/AnaBHernandez/orden-con-mimo-frontend/wiki).
+
+## 🤝 Contribución
+1. Haz fork del proyecto
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+4. Push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
+
+## 📜 Licencia
 Este proyecto está licenciado bajo MIT License.
 
+## 🎯 Características Principales
+- ✅ **Interfaz intuitiva** con tema Reino MIMO
+- ✅ **Gestión de tareas** por categorías MIMO
+- ✅ **Espacios organizativos** para diferentes áreas
+- ✅ **Autenticación** y gestión de sesiones
+- ✅ **Responsive design** para todos los dispositivos
+- ✅ **Comunicación con API** REST del backend
+- ✅ **Base de datos H2** para desarrollo
+
+## 🐛 Solución de Problemas
+Si encuentras problemas:
+
+1. **Verifica que Java 21 esté instalado**: `java -version`
+2. **Verifica que Maven esté instalado**: `mvn -version`
+3. **Revisa los logs** de la aplicación para errores específicos
+4. **Asegúrate de que los puertos 8083 y 8084 estén libres**
+
+## 📞 Soporte
+Para soporte técnico o preguntas sobre el proyecto, consulta la [Wiki del repositorio](https://github.com/AnaBHernandez/orden-con-mimo-frontend/wiki) o abre un issue en GitHub.
